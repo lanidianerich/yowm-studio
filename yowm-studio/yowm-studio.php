@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.13.1
+ * Version:     0.13.2
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.13.1' );
+define( 'YOWM_STUDIO_VERSION', '0.13.2' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -2815,5 +2815,7 @@ final class YOWM_Studio {
 register_activation_hook( __FILE__, array( 'YOWM_Studio', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'YOWM_Studio', 'deactivate' ) );
 require_once YOWM_STUDIO_DIR . 'student-access.php';
+require_once YOWM_STUDIO_DIR . 'admin-simplify.php';
 YOWM_Student_Access::init();
+YOWM_Admin_Simplify::init();
 YOWM_Studio::init();

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.2
+
+- Added a simplified admin menu for administrators: shows only YOWM Studio, Media, Plugins, and Settings by default.
+- Added a "Full WordPress menu →" escape hatch and a "⬅ Simplify menu" toggle; the choice is per-user and never affects students.
+- In simple mode, logging in lands on YOWM Studio instead of the generic dashboard.
+
 ## 0.13.1
 
 - Made "contact Lani" on the no-access screen a clickable mailto link to lani@lanidianerich.com.
