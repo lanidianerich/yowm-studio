@@ -59,7 +59,7 @@ $session_audio = $session_media['audio'];
 						<h2>Listen to the audio lecture</h2>
 						<div class="yowm-media-card yowm-audio-player">
 							<p class="yowm-audio-title"><?php echo esc_html( YOWM_Studio::clean_title( $lesson->ID ) ); ?></p>
-							<?php echo wp_kses_post( wp_audio_shortcode( array( 'src' => $post_audio ) ) ); ?>
+							<audio class="yowm-native-audio" controls preload="none" src="<?php echo esc_url( $post_audio ); ?>"></audio>
 							<p class="yowm-audio-download"><a href="<?php echo esc_url( $post_audio ); ?>" download>Download the audio lecture</a></p>
 						</div>
 					</section>
@@ -103,7 +103,7 @@ $session_audio = $session_media['audio'];
 						<h3>Listen to the live session</h3>
 						<div class="yowm-media-card yowm-audio-player">
 							<p class="yowm-audio-title"><?php echo esc_html( YOWM_Studio::clean_title( $lesson->ID ) . ' — Live Session' ); ?></p>
-							<?php echo wp_kses_post( wp_audio_shortcode( array( 'src' => $session_audio ) ) ); ?>
+							<audio class="yowm-native-audio" controls preload="none" src="<?php echo esc_url( $session_audio ); ?>"></audio>
 							<p class="yowm-audio-download"><a href="<?php echo esc_url( $session_audio ); ?>" download>Download the session audio</a></p>
 						</div>
 					<?php endif; ?>

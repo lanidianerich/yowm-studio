@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.2
+
+- Lesson audio now uses the browser's native audio player instead of WordPress's script-based one. It needs no JavaScript, so it plays reliably on the front end even when the host's cache minifies or defers scripts (the likely reason it played in the Media Library but not on the site). Kept the rounded card, episode title, and download link.
+
 ## 0.22.1
 
 - Reverted the 0.22.0 sidebar change, which hid the Lesson/Resource options instead of moving them. The Lesson editor options are back and working.

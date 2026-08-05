@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.22.1
+ * Version:     0.22.2
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.22.1' );
+define( 'YOWM_STUDIO_VERSION', '0.22.2' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -661,15 +661,6 @@ final class YOWM_Studio {
 			YOWM_STUDIO_VERSION,
 			true
 		);
-
-		// Load WordPress's audio-player library early on classroom pages. The lesson
-		// audio is rendered from a virtual route, where the shortcode's own on-demand
-		// enqueue can arrive too late for the player to initialize.
-		$route = self::request_route();
-		if ( ! empty( $route['year'] ) ) {
-			wp_enqueue_style( 'wp-mediaelement' );
-			wp_enqueue_script( 'wp-mediaelement' );
-		}
 	}
 
 	public static function body_classes( array $classes ): array {
