@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.17.0
+
+- Rebuilt the Students admin area to be cleaner and less clunky.
+- Invite form fields now stack top to bottom (so new fields are easy to add, and the Email field no longer looks oversized).
+- Cohort years are now a compact checkbox dropdown in both the invite form and the roster, so accumulating years stay tidy.
+- Roster feed column no longer shows the raw URL — just a "Copy" button and a "New URL" link.
+- Roster columns are sortable: click a header to sort by that value.
+- Added a payment type (Full year / Monthly) per student. "Suspend" now only appears for month-to-month students, since full-year students don't need revoking.
+- Moved pending invitations into their own section beneath the roster.
+
 ## 0.16.0
 
 - Student-facing classroom pages now open every external link (anything leaving the site, like Discord or Zoom) in a new tab, so students never lose their place. Internal classroom navigation still opens in the same tab.

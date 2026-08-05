@@ -622,3 +622,23 @@
 .yowm-invite-fields input[type=email],
 .yowm-invite-fields input:not([type]) { box-sizing: border-box; width: 100%; }
 .yowm-mod-check { white-space: nowrap; }
+
+/* 0.17.0: students roster redesign */
+.yowm-invite-form { max-width: 420px; }
+.yowm-invite-form .yowm-field { margin: 0 0 14px; }
+.yowm-invite-form .yowm-field > label { display: block; font-weight: 600; margin-bottom: 4px; }
+.yowm-invite-form input[type=text], .yowm-invite-form input[type=email], .yowm-invite-form input:not([type]) { width: 100%; box-sizing: border-box; }
+.yowm-year-dropdown { position: relative; display: inline-block; }
+.yowm-year-dropdown > summary { cursor: pointer; list-style: none; display: inline-block; min-width: 120px; padding: 6px 26px 6px 10px; border: 1px solid #8c8f94; border-radius: 4px; background: #fff; position: relative; }
+.yowm-year-dropdown > summary::-webkit-details-marker { display: none; }
+.yowm-year-dropdown > summary::after { content: "\25BE"; position: absolute; right: 9px; top: 50%; transform: translateY(-50%); opacity: .6; }
+.yowm-year-menu { position: absolute; z-index: 20; margin-top: 4px; min-width: 100%; background: #fff; border: 1px solid #8c8f94; border-radius: 4px; padding: 8px 10px; box-shadow: 0 2px 10px rgba(0,0,0,.15); white-space: nowrap; }
+.yowm-year-menu label { display: block; margin: 5px 0; }
+.yowm-sortable-table th.yowm-sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+.yowm-sortable-table th.yowm-sortable:hover { text-decoration: underline; }
+.yowm-sortable-table th.yowm-sort-asc::after { content: " \25B2"; font-size: 10px; }
+.yowm-sortable-table th.yowm-sort-desc::after { content: " \25BC"; font-size: 10px; }
+.yowm-feed-row { margin: 2px 0; white-space: nowrap; }
+.yowm-feed-cell .button-link.yowm-copy { padding: 0; color: #2271b1; text-decoration: underline; cursor: pointer; }
+.yowm-muted { color: #888; }
+.yowm-unified-roster select { max-width: 120px; }

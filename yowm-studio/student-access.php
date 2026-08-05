@@ -6,6 +6,7 @@ final class YOWM_Student_Access {
 	const META_MEMBERSHIPS = '_yowm_cohort_memberships';
 	const META_LAST_LOGIN = '_yowm_last_login';
 	const META_FEED_PREFIX = '_yowm_personal_podcast_';
+	const META_PAYMENT = '_yowm_payment_type'; // 'full_year' or 'monthly'.
 	const OPTION_INVITES = 'yowm_pending_student_invitations';
 
 	public static function init(): void {
@@ -114,7 +115,7 @@ final class YOWM_Student_Access {
 			if(!$errors){
 				$uid=wp_insert_user(array('user_login'=>$username,'user_email'=>$invite['email'],'user_pass'=>$pass,'first_name'=>$invite['first_name'],'last_name'=>$invite['last_name'],'display_name'=>trim($invite['first_name'].' '.$invite['last_name'])?:$username,'role'=>self::ROLE));
 				if(is_wp_error($uid))$errors[]=$uid->get_error_message(); else {
-					self::set_memberships($uid,(array)$invite['cohorts']);$all=self::invites();unset($all[$id]);self::save_invites($all);wp_set_current_user($uid);wp_set_auth_cookie($uid,true);
+					self::set_memberships($uid,(array)$invite['cohorts']);update_user_meta($uid,self::META_PAYMENT,'full_year'===($invite['payment']??'')?'full_year':'monthly');$all=self::invites();unset($all[$id]);self::save_invites($all);wp_set_current_user($uid);wp_set_auth_cookie($uid,true);
 					wp_safe_redirect(self::student_home_url($uid));exit;
 				}
 			}
@@ -140,18 +141,18 @@ final class YOWM_Student_Access {
 
 	public static function handle_add_students(): void {
 		if(!current_user_can('manage_options'))wp_die('Permission denied.');check_admin_referer('yowm_add_students');
-		$first=sanitize_text_field(wp_unslash($_POST['first_name']??''));$last=sanitize_text_field(wp_unslash($_POST['last_name']??''));$email=sanitize_email(wp_unslash($_POST['email']??''));$cohorts=array_map('absint',(array)($_POST['cohorts']??array()));
+		$first=sanitize_text_field(wp_unslash($_POST['first_name']??''));$last=sanitize_text_field(wp_unslash($_POST['last_name']??''));$email=sanitize_email(wp_unslash($_POST['email']??''));$cohorts=array_map('absint',(array)($_POST['cohorts']??array()));$payment='full_year'===($_POST['payment']??'')?'full_year':'monthly';
 		if(!is_email($email)||!$cohorts){self::redirect_admin('Enter a valid email and select at least one cohort.','error');}
 		$user=get_user_by('email',$email);
 		if($user){if(!in_array(self::ROLE,(array)$user->roles,true)){self::redirect_admin('That email belongs to a non-student WordPress account and was not changed.','error');}
-			$m=array_unique(array_merge(array_keys(self::memberships($user->ID)),$cohorts));self::set_memberships($user->ID,$m);self::redirect_admin('Existing student updated.');}
+			$m=array_unique(array_merge(array_keys(self::memberships($user->ID)),$cohorts));self::set_memberships($user->ID,$m);update_user_meta($user->ID,self::META_PAYMENT,$payment);self::redirect_admin('Existing student updated.');}
 		$all=self::invites();$existing='';foreach($all as $id=>$i){if(strtolower($i['email'])===strtolower($email)){$existing=$id;break;}}
-		$id=$existing?:wp_generate_uuid4();$old=$existing?$all[$id]:array('cohorts'=>array());$all[$id]=array('first_name'=>$first,'last_name'=>$last,'email'=>$email,'cohorts'=>array_values(array_unique(array_merge((array)$old['cohorts'],$cohorts))),'token_hash'=>'','created_at'=>$old['created_at']??current_time('mysql',true));self::save_invites($all);
+		$id=$existing?:wp_generate_uuid4();$old=$existing?$all[$id]:array('cohorts'=>array());$all[$id]=array('first_name'=>$first,'last_name'=>$last,'email'=>$email,'cohorts'=>array_values(array_unique(array_merge((array)$old['cohorts'],$cohorts))),'payment'=>$payment,'token_hash'=>'','created_at'=>$old['created_at']??current_time('mysql',true));self::save_invites($all);
 		$sent=self::send_invitation($id);self::redirect_admin($sent?'Invitation sent.':'Invitation saved, but WordPress could not send the email.');
 	}
 	public static function handle_save_roster(): void {
 		if(!current_user_can('manage_options'))wp_die('Permission denied.');check_admin_referer('yowm_save_roster');
-		foreach((array)($_POST['students']??array()) as $uid=>$row){$uid=absint($uid);$u=get_userdata($uid);if(!$u||!in_array(self::ROLE,(array)$u->roles,true))continue;wp_update_user(array('ID'=>$uid,'first_name'=>sanitize_text_field(wp_unslash($row['first_name']??'')),'last_name'=>sanitize_text_field(wp_unslash($row['last_name']??'')),'display_name'=>trim(sanitize_text_field(wp_unslash($row['first_name']??'')).' '.sanitize_text_field(wp_unslash($row['last_name']??'')))?:$u->user_login));self::set_memberships($uid,array_map('absint',(array)($row['cohorts']??array())));self::set_moderator($uid,!empty($row['moderator']));}
+		foreach((array)($_POST['students']??array()) as $uid=>$row){$uid=absint($uid);$u=get_userdata($uid);if(!$u||!in_array(self::ROLE,(array)$u->roles,true))continue;wp_update_user(array('ID'=>$uid,'first_name'=>sanitize_text_field(wp_unslash($row['first_name']??'')),'last_name'=>sanitize_text_field(wp_unslash($row['last_name']??'')),'display_name'=>trim(sanitize_text_field(wp_unslash($row['first_name']??'')).' '.sanitize_text_field(wp_unslash($row['last_name']??'')))?:$u->user_login));self::set_memberships($uid,array_map('absint',(array)($row['cohorts']??array())));self::set_moderator($uid,!empty($row['moderator']));update_user_meta($uid,self::META_PAYMENT,'full_year'===($row['payment']??'')?'full_year':'monthly');}
 		self::redirect_admin('Roster changes saved.');
 	}
 	public static function handle_student_action(): void {
@@ -173,18 +174,155 @@ final class YOWM_Student_Access {
 	public static function redirect_students_from_admin(): void {if(!is_user_logged_in()||wp_doing_ajax())return;$u=wp_get_current_user();if(in_array(self::ROLE,(array)$u->roles,true)&&!current_user_can('edit_posts')){wp_safe_redirect(self::student_home_url($u->ID));exit;}}
 	public static function hide_student_admin_bar(bool $show): bool {if(!is_user_logged_in())return $show;$u=wp_get_current_user();return in_array(self::ROLE,(array)$u->roles,true)&&!current_user_can('edit_posts')?false:$show;}
 
+	private static function payment_type( int $user_id ): string {
+		return 'full_year' === (string) get_user_meta( $user_id, self::META_PAYMENT, true ) ? 'full_year' : 'monthly';
+	}
+
+	private static function payment_select( string $name, string $current ): string {
+		$out = '<select name="' . esc_attr( $name ) . '">';
+		foreach ( array( 'full_year' => 'Full year', 'monthly' => 'Monthly' ) as $value => $label ) {
+			$out .= '<option value="' . esc_attr( $value ) . '" ' . selected( $current, $value, false ) . '>' . esc_html( $label ) . '</option>';
+		}
+		return $out . '</select>';
+	}
+
+	// A compact dropdown of cohort-year checkboxes, built on native <details>.
+	// admin.js keeps the summary label in sync as boxes are ticked.
+	private static function year_dropdown( string $name, array $selected_ids, array $cohorts ): string {
+		$selected_ids = array_map( 'intval', $selected_ids );
+		$labels       = array();
+		foreach ( $cohorts as $c ) {
+			$year = YOWM_Studio::cohort_year( $c->ID );
+			if ( $year && in_array( (int) $c->ID, $selected_ids, true ) ) {
+				$labels[] = (int) $year;
+			}
+		}
+		sort( $labels );
+		$summary = $labels ? implode( ', ', $labels ) : 'Select years';
+
+		$out = '<details class="yowm-year-dropdown"><summary>' . esc_html( $summary ) . '</summary><div class="yowm-year-menu">';
+		foreach ( $cohorts as $c ) {
+			$year = YOWM_Studio::cohort_year( $c->ID );
+			if ( ! $year ) {
+				continue;
+			}
+			$out .= '<label><input type="checkbox" name="' . esc_attr( $name ) . '" value="' . esc_attr( (string) $c->ID ) . '" ' . checked( in_array( (int) $c->ID, $selected_ids, true ), true, false ) . '> ' . esc_html( (string) $year ) . '</label>';
+		}
+		return $out . '</div></details>';
+	}
+
 	public static function admin_page(): void {
-		if(!current_user_can('manage_options'))return;$cohorts=self::cohorts();$students=self::all_students();$invites=self::invites();
-		echo '<div class="wrap yowm-admin"><h1>Students</h1><p>One roster for every current, returning, and invited student.</p>';
-		if(isset($_GET['yowm_message']))echo '<div class="notice notice-'.esc_attr('error'===($_GET['yowm_type']??'')?'error':'success').' is-dismissible"><p>'.esc_html(sanitize_text_field(wp_unslash($_GET['yowm_message']))).'</p></div>';
-		echo '<section class="yowm-access-panel"><h2>Invite a student</h2><form method="post" action="'.esc_url(admin_url('admin-post.php')).'">';wp_nonce_field('yowm_add_students');echo '<input type="hidden" name="action" value="yowm_add_students"><div class="yowm-invite-fields"><p><label>First name<input name="first_name" required></label></p><p><label>Last name<input name="last_name" required></label></p><p><label>Email<input type="email" name="email" required></label></p><fieldset><legend>Cohort year(s)</legend>';
-		foreach($cohorts as $c){echo '<label><input type="checkbox" name="cohorts[]" value="'.esc_attr((string)$c->ID).'"> '.esc_html((string)YOWM_Studio::cohort_year($c->ID)).'</label> ';}echo '</fieldset></div><p><button class="button button-primary">Send invitation</button></p></form></section>';
-		echo '<form method="post" action="'.esc_url(admin_url('admin-post.php')).'">';wp_nonce_field('yowm_save_roster');echo '<input type="hidden" name="action" value="yowm_save_roster"><table class="widefat striped yowm-unified-roster"><thead><tr><th>Username</th><th>First name</th><th>Last name</th><th>Email</th><th>Cohort years</th><th>Status</th><th>Moderator</th><th>Podcast feeds</th><th>Actions</th></tr></thead><tbody>';
-		foreach($students as $u){$m=self::memberships($u->ID);$active=array_filter($m,fn($v)=>'active'===$v);$rev=array_filter($m,fn($v)=>'revoked'===$v);echo '<tr><td><strong>'.esc_html($u->user_login).'</strong></td><td><input name="students['.$u->ID.'][first_name]" value="'.esc_attr($u->first_name).'"></td><td><input name="students['.$u->ID.'][last_name]" value="'.esc_attr($u->last_name).'"></td><td>'.esc_html($u->user_email).'</td><td class="yowm-cohort-checks">';foreach($cohorts as $c){echo '<label><input type="checkbox" name="students['.$u->ID.'][cohorts][]" value="'.$c->ID.'" '.checked(isset($m[$c->ID]),true,false).'> '.esc_html((string)YOWM_Studio::cohort_year($c->ID)).'</label> ';}echo '</td><td>'.($rev?'Partly/fully revoked':(get_user_meta($u->ID,self::META_LAST_LOGIN,true)?'Active':'Account created')).'</td><td><label class="yowm-mod-check"><input type="checkbox" name="students['.$u->ID.'][moderator]" '.checked(self::is_moderator($u->ID),true,false).'> Can edit</label></td><td>';
-		foreach($active as $cid=>$v){$url=self::feed_url($u->ID,(int)$cid);echo '<div><strong>'.esc_html((string)YOWM_Studio::cohort_year((int)$cid)).':</strong> <input class="code" readonly value="'.esc_attr($url).'"> <a href="'.esc_url(self::student_action_url('rotate',array('user_id'=>$u->ID,'cohort_id'=>(int)$cid))).'">New URL</a></div>';}echo '</td><td>';
-		if($rev)echo '<a href="'.esc_url(self::student_action_url('restore_all',array('user_id'=>$u->ID))).'">Restore all</a> · ';else echo '<a href="'.esc_url(self::student_action_url('suspend',array('user_id'=>$u->ID))).'">Suspend</a> · ';
-		echo '<a class="yowm-danger-link" onclick="return confirm(\'Permanently delete this student account and every cohort membership? This cannot be undone.\')" href="'.esc_url(self::student_action_url('delete_user',array('user_id'=>$u->ID))).'">Delete permanently</a></td></tr>';}
-		foreach($invites as $id=>$i){echo '<tr class="yowm-pending"><td><em>Not chosen</em></td><td>'.esc_html($i['first_name']).'</td><td>'.esc_html($i['last_name']).'</td><td>'.esc_html($i['email']).'</td><td>'.esc_html(self::cohort_label_list((array)$i['cohorts'])).'</td><td>Invitation pending</td><td>—</td><td>Created after activation</td><td><a href="'.esc_url(self::student_action_url('resend_invite',array('invite_id'=>$id))).'">Resend</a> · <a class="yowm-danger-link" onclick="return confirm(\'Delete this pending invitation?\')" href="'.esc_url(self::student_action_url('delete_invite',array('invite_id'=>$id))).'">Delete</a></td></tr>';}
-		echo '</tbody></table><p><button class="button button-primary">Save roster changes</button></p></form></div>';
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$cohorts  = self::cohorts();
+		$students = self::all_students();
+		$invites  = self::invites();
+		$post_url = esc_url( admin_url( 'admin-post.php' ) );
+
+		echo '<div class="wrap yowm-admin yowm-students">';
+		echo '<h1>Students</h1>';
+		echo '<p class="yowm-lede">One roster for every current, returning, and invited student.</p>';
+
+		if ( isset( $_GET['yowm_message'] ) ) {
+			$type = 'error' === ( $_GET['yowm_type'] ?? '' ) ? 'error' : 'success';
+			echo '<div class="notice notice-' . esc_attr( $type ) . ' is-dismissible"><p>' . esc_html( sanitize_text_field( wp_unslash( $_GET['yowm_message'] ) ) ) . '</p></div>';
+		}
+
+		// Invite a student — fields stacked top to bottom.
+		echo '<section class="yowm-access-panel"><h2>Invite a student</h2>';
+		echo '<form method="post" action="' . $post_url . '" class="yowm-invite-form">';
+		wp_nonce_field( 'yowm_add_students' );
+		echo '<input type="hidden" name="action" value="yowm_add_students">';
+		echo '<p class="yowm-field"><label for="yowm-invite-first">First name</label><input id="yowm-invite-first" name="first_name" required></p>';
+		echo '<p class="yowm-field"><label for="yowm-invite-last">Last name</label><input id="yowm-invite-last" name="last_name" required></p>';
+		echo '<p class="yowm-field"><label for="yowm-invite-email">Email</label><input id="yowm-invite-email" type="email" name="email" required></p>';
+		echo '<p class="yowm-field"><label>Cohort year(s)</label>' . self::year_dropdown( 'cohorts[]', array(), $cohorts ) . '</p>';
+		echo '<p class="yowm-field"><label>Payment</label>' . self::payment_select( 'payment', 'monthly' ) . '</p>';
+		echo '<p><button class="button button-primary">Send invitation</button></p>';
+		echo '</form></section>';
+
+		// Roster of created accounts — sortable headers, inline-editable.
+		echo '<h2>Roster</h2>';
+		if ( ! $students ) {
+			echo '<p>No student accounts yet. Invited students appear here once they set up their account.</p>';
+		} else {
+			echo '<form method="post" action="' . $post_url . '">';
+			wp_nonce_field( 'yowm_save_roster' );
+			echo '<input type="hidden" name="action" value="yowm_save_roster">';
+			echo '<table class="widefat striped yowm-unified-roster yowm-sortable-table"><thead><tr>';
+			foreach ( array( 'Username', 'First name', 'Last name', 'Email', 'Cohort years', 'Payment', 'Status', 'Moderator' ) as $label ) {
+				echo '<th class="yowm-sortable" role="button" tabindex="0">' . esc_html( $label ) . '</th>';
+			}
+			echo '<th>Podcast feed</th><th>Actions</th></tr></thead><tbody>';
+
+			foreach ( $students as $u ) {
+				$m       = self::memberships( $u->ID );
+				$active  = array_filter( $m, static fn( $v ) => 'active' === $v );
+				$revoked = array_filter( $m, static fn( $v ) => 'revoked' === $v );
+				$payment = self::payment_type( $u->ID );
+				$status  = $revoked ? 'Partly/fully revoked' : ( get_user_meta( $u->ID, self::META_LAST_LOGIN, true ) ? 'Active' : 'Account created' );
+				$prefix  = 'students[' . $u->ID . ']';
+
+				echo '<tr>';
+				echo '<td><strong>' . esc_html( $u->user_login ) . '</strong></td>';
+				echo '<td><input name="' . esc_attr( $prefix ) . '[first_name]" value="' . esc_attr( $u->first_name ) . '"></td>';
+				echo '<td><input name="' . esc_attr( $prefix ) . '[last_name]" value="' . esc_attr( $u->last_name ) . '"></td>';
+				echo '<td>' . esc_html( $u->user_email ) . '</td>';
+				echo '<td data-sort="' . esc_attr( self::cohort_label_list( array_keys( $m ) ) ) . '">' . self::year_dropdown( $prefix . '[cohorts][]', array_keys( $m ), $cohorts ) . '</td>';
+				echo '<td>' . self::payment_select( $prefix . '[payment]', $payment ) . '</td>';
+				echo '<td>' . esc_html( $status ) . '</td>';
+				echo '<td><label class="yowm-mod-check"><input type="checkbox" name="' . esc_attr( $prefix ) . '[moderator]" ' . checked( self::is_moderator( $u->ID ), true, false ) . '> Can edit</label></td>';
+
+				echo '<td class="yowm-feed-cell">';
+				if ( $active ) {
+					foreach ( $active as $cid => $v ) {
+						$url  = self::feed_url( $u->ID, (int) $cid );
+						$year = YOWM_Studio::cohort_year( (int) $cid );
+						echo '<div class="yowm-feed-row"><strong>' . esc_html( (string) $year ) . ':</strong> ';
+						echo '<button type="button" class="button-link yowm-copy" data-yowm-copy-url="' . esc_url( $url ) . '">Copy</button> · ';
+						echo '<a href="' . esc_url( self::student_action_url( 'rotate', array( 'user_id' => $u->ID, 'cohort_id' => (int) $cid ) ) ) . '">New URL</a></div>';
+					}
+				} else {
+					echo '<span class="yowm-muted">—</span>';
+				}
+				echo '</td>';
+
+				echo '<td>';
+				if ( $revoked ) {
+					echo '<a href="' . esc_url( self::student_action_url( 'restore_all', array( 'user_id' => $u->ID ) ) ) . '">Restore all</a> · ';
+				} elseif ( 'monthly' === $payment ) {
+					echo '<a href="' . esc_url( self::student_action_url( 'suspend', array( 'user_id' => $u->ID ) ) ) . '">Suspend</a> · ';
+				}
+				echo '<a class="yowm-danger-link" onclick="return confirm(\'Permanently delete this student account and every cohort membership? This cannot be undone.\')" href="' . esc_url( self::student_action_url( 'delete_user', array( 'user_id' => $u->ID ) ) ) . '">Delete permanently</a>';
+				echo '</td>';
+				echo '</tr>';
+			}
+
+			echo '</tbody></table>';
+			echo '<p><button class="button button-primary">Save roster changes</button></p>';
+			echo '</form>';
+		}
+
+		// Pending invitations — kept in their own section so the roster stays clean.
+		if ( $invites ) {
+			echo '<h2>Pending invitations</h2>';
+			echo '<table class="widefat striped yowm-pending-table"><thead><tr><th>Name</th><th>Email</th><th>Cohort years</th><th>Payment</th><th>Actions</th></tr></thead><tbody>';
+			foreach ( $invites as $id => $i ) {
+				$name = trim( ( $i['first_name'] ?? '' ) . ' ' . ( $i['last_name'] ?? '' ) );
+				$pay  = 'full_year' === ( $i['payment'] ?? '' ) ? 'Full year' : 'Monthly';
+				echo '<tr class="yowm-pending">';
+				echo '<td>' . esc_html( $name ) . '</td>';
+				echo '<td>' . esc_html( (string) ( $i['email'] ?? '' ) ) . '</td>';
+				echo '<td>' . esc_html( self::cohort_label_list( (array) ( $i['cohorts'] ?? array() ) ) ) . '</td>';
+				echo '<td>' . esc_html( $pay ) . '</td>';
+				echo '<td><a href="' . esc_url( self::student_action_url( 'resend_invite', array( 'invite_id' => $id ) ) ) . '">Resend</a> · <a class="yowm-danger-link" onclick="return confirm(\'Delete this pending invitation?\')" href="' . esc_url( self::student_action_url( 'delete_invite', array( 'invite_id' => $id ) ) ) . '">Delete</a></td>';
+				echo '</tr>';
+			}
+			echo '</tbody></table>';
+		}
+
+		echo '</div>';
 	}
 }

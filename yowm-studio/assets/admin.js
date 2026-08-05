@@ -232,3 +232,95 @@
 
   updateResourcePanels();
 })();
+
+/* Students roster: copy feed URLs, live cohort-year summaries, sortable columns. */
+(function () {
+  "use strict";
+
+  // Copy a literal URL to the clipboard (the feed "Copy" buttons).
+  document.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-yowm-copy-url]");
+    if (!button) return;
+    event.preventDefault();
+    const url = button.dataset.yowmCopyUrl;
+    if (!url) return;
+    const original = button.textContent;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch (error) {
+      const field = document.createElement("textarea");
+      field.value = url;
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      document.execCommand("copy");
+      field.remove();
+    }
+    button.textContent = "Copied!";
+    window.setTimeout(() => { button.textContent = original; }, 1600);
+  });
+
+  // Keep each cohort-year dropdown's summary label in sync with its checkboxes.
+  function refreshYearSummary(dropdown) {
+    const summary = dropdown.querySelector("summary");
+    if (!summary) return;
+    const years = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked'))
+      .map((box) => box.parentElement.textContent.trim())
+      .filter(Boolean);
+    summary.textContent = years.length ? years.join(", ") : "Select years";
+    const cell = dropdown.closest("td");
+    if (cell) cell.dataset.sort = years.join(", ");
+  }
+  document.addEventListener("change", (event) => {
+    const dropdown = event.target.closest(".yowm-year-dropdown");
+    if (dropdown) refreshYearSummary(dropdown);
+  });
+
+  // Click (or Enter/Space on) a roster header to sort the table by that column.
+  function cellSortKey(cell) {
+    if (!cell) return "";
+    if (cell.dataset.sort !== undefined) return cell.dataset.sort;
+    const field = cell.querySelector("input, select");
+    if (field) return field.type === "checkbox" ? (field.checked ? "1" : "0") : field.value;
+    return cell.textContent.trim();
+  }
+  function sortTable(table, columnIndex, ascending) {
+    const body = table.tBodies[0];
+    if (!body) return;
+    const rows = Array.from(body.rows);
+    rows.sort((a, b) => {
+      const av = cellSortKey(a.cells[columnIndex]) || "";
+      const bv = cellSortKey(b.cells[columnIndex]) || "";
+      const numA = parseFloat(av);
+      const numB = parseFloat(bv);
+      let result;
+      if (!isNaN(numA) && !isNaN(numB) && av.trim() !== "" && bv.trim() !== "") {
+        result = numA - numB;
+      } else {
+        result = av.localeCompare(bv, undefined, { sensitivity: "base" });
+      }
+      return ascending ? result : -result;
+    });
+    rows.forEach((row) => body.appendChild(row));
+  }
+  document.querySelectorAll("table.yowm-sortable-table").forEach((table) => {
+    const headers = table.tHead ? Array.from(table.tHead.rows[0].cells) : [];
+    headers.forEach((header, index) => {
+      if (!header.classList.contains("yowm-sortable")) return;
+      const activate = () => {
+        const ascending = !header.classList.contains("yowm-sort-asc");
+        headers.forEach((h) => h.classList.remove("yowm-sort-asc", "yowm-sort-desc"));
+        header.classList.add(ascending ? "yowm-sort-asc" : "yowm-sort-desc");
+        sortTable(table, index, ascending);
+      };
+      header.addEventListener("click", activate);
+      header.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activate();
+        }
+      });
+    });
+  });
+})();
