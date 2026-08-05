@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.17.0
+ * Version:     0.18.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.17.0' );
+define( 'YOWM_STUDIO_VERSION', '0.18.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -550,15 +550,25 @@ final class YOWM_Studio {
 		}
 
 		if ( $year && $resource_slug ) {
-			return self::has_access()
+			if ( ! self::has_access() ) {
+				return YOWM_STUDIO_DIR . 'templates/gate.php';
+			}
+			// The router only sets the virtual post when the resource resolved for
+			// this cohort. Without it, serve a 404 rather than a broken template.
+			return isset( $GLOBALS['yowm_virtual_post'] )
 				? YOWM_STUDIO_DIR . 'templates/single-resource.php'
-				: YOWM_STUDIO_DIR . 'templates/gate.php';
+				: YOWM_STUDIO_DIR . 'templates/404.php';
 		}
 
 		if ( $year && $lesson_slug ) {
-			return self::has_access()
+			if ( ! self::has_access() ) {
+				return YOWM_STUDIO_DIR . 'templates/gate.php';
+			}
+			// Same guard: a lesson that isn't resolvable for this cohort (e.g. not
+			// assigned to it) must 404, not fall through to single-lesson.php.
+			return isset( $GLOBALS['yowm_virtual_post'] )
 				? YOWM_STUDIO_DIR . 'templates/single-lesson.php'
-				: YOWM_STUDIO_DIR . 'templates/gate.php';
+				: YOWM_STUDIO_DIR . 'templates/404.php';
 		}
 
 		if ( $year ) {
@@ -1761,25 +1771,34 @@ final class YOWM_Studio {
 		if ( ! is_array( $fatal ) || empty( $fatal['message'] ) ) {
 			echo '<div class="notice notice-info inline"><p>No fatal error has been recorded since this diagnostic build was installed.</p></div>';
 		} else {
+			$fields = array(
+				'Time (UTC)'     => $fatal['time'] ?? '',
+				'Request'        => $fatal['request_uri'] ?? '',
+				'Message'        => $fatal['message'] ?? '',
+				'File'           => $fatal['file'] ?? '',
+				'Line'           => $fatal['line'] ?? '',
+				'Error type'     => $fatal['type'] ?? '',
+				'PHP version'    => $fatal['php_version'] ?? '',
+				'WP version'     => $fatal['wp_version'] ?? '',
+				'Plugin version' => $fatal['plugin'] ?? '',
+			);
+
 			echo '<table class="widefat striped" style="max-width:1100px"><tbody>';
-			foreach (
-				array(
-					'Time (UTC)'    => $fatal['time'] ?? '',
-					'Request'       => $fatal['request_uri'] ?? '',
-					'Message'       => $fatal['message'] ?? '',
-					'File'          => $fatal['file'] ?? '',
-					'Line'          => $fatal['line'] ?? '',
-					'Error type'    => $fatal['type'] ?? '',
-					'PHP version'   => $fatal['php_version'] ?? '',
-					'WP version'    => $fatal['wp_version'] ?? '',
-					'Plugin version'=> $fatal['plugin'] ?? '',
-				) as $label => $value
-			) {
+			foreach ( $fields as $label => $value ) {
 				echo '<tr><th style="width:220px">' . esc_html( $label ) . '</th><td><code style="white-space:pre-wrap">' . esc_html( (string) $value ) . '</code></td></tr>';
 			}
 			echo '</tbody></table>';
 
-			echo '<form method="post" style="margin-top:16px">';
+			// One-click copy of the whole error as plain text (handler lives in admin.js).
+			$copy_lines = array();
+			foreach ( $fields as $label => $value ) {
+				$copy_lines[] = $label . ': ' . (string) $value;
+			}
+			$copy_text = 'YOWM Studio ' . YOWM_STUDIO_VERSION . " fatal error\n" . implode( "\n", $copy_lines );
+
+			echo '<p style="margin-top:16px"><button type="button" class="button" data-yowm-copy-url="' . esc_attr( $copy_text ) . '">Copy error details</button></p>';
+
+			echo '<form method="post">';
 			wp_nonce_field( 'yowm_clear_fatal' );
 			echo '<button class="button" name="yowm_clear_fatal" value="1">Clear stored error</button>';
 			echo '</form>';

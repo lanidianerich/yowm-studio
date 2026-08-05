@@ -7,6 +7,12 @@ $year     = absint( get_query_var( 'yowm_cohort_year' ) );
 
 include YOWM_STUDIO_DIR . 'templates/cohort-nav.php';
 $resource = $GLOBALS['yowm_virtual_post'] ?? null;
+
+if ( ! $resource instanceof WP_Post ) {
+	echo '<main id="main"><div class="wide-container yowm-empty" style="padding:40px 0"><p>This item isn’t available in the ' . esc_html( (string) $year ) . ' classroom.</p><p><a href="' . esc_url( home_url( '/' . $year . '/' ) ) . '">← Back to classroom home</a></p></div></main>';
+	get_footer();
+	return;
+}
 ?>
 <main id="main" class="yowm-resource-page">
 	<article>

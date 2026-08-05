@@ -8,6 +8,16 @@ $year    = absint( get_query_var( 'yowm_cohort_year' ) );
 include YOWM_STUDIO_DIR . 'templates/cohort-nav.php';
 $cohort  = YOWM_Studio::get_cohort_by_year( $year );
 $lesson  = $GLOBALS['yowm_virtual_post'] ?? null;
+
+// Never fatal if the lesson couldn't be resolved for this cohort — show a calm
+// message instead of a white screen. (get_header has already printed, so we
+// render in place rather than redirect.)
+if ( ! $cohort instanceof WP_Post || ! $lesson instanceof WP_Post ) {
+	echo '<main id="main"><div class="wide-container yowm-empty" style="padding:40px 0"><p>This lesson isn’t available in the ' . esc_html( (string) $year ) . ' classroom yet.</p><p><a href="' . esc_url( home_url( '/' . $year . '/' ) ) . '">← Back to classroom home</a></p></div></main>';
+	get_footer();
+	return;
+}
+
 $lessons = YOWM_Studio::get_cohort_lessons( $cohort->ID );
 
 $current_index = -1;

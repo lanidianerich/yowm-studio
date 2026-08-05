@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.18.0
+
+- Fixed a fatal error (critical-error page) when opening a lesson that can't be resolved for its cohort — for example a lesson that isn't assigned to that year yet. The router now serves a normal 404, and the lesson and Class Info templates degrade to a calm "not available" message instead of white-screening.
+- Added a "Copy error details" button to YOWM Studio → System Diagnostics, so the last fatal error can be copied as plain text in one click.
+
 ## 0.17.0
 
 - Rebuilt the Students admin area to be cleaner and less clunky.
