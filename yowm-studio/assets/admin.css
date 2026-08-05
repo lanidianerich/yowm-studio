@@ -642,3 +642,27 @@
 .yowm-feed-cell .button-link.yowm-copy { padding: 0; color: #2271b1; text-decoration: underline; cursor: pointer; }
 .yowm-muted { color: #888; }
 .yowm-unified-roster select { max-width: 120px; }
+
+/* 0.23.0: de-slider the block-editor meta-box area on YOWM screens. Let the
+   options flow at the bottom and scroll with the page instead of living in a
+   fixed, draggable split panel. CSS only — it cannot hide the boxes. Targets
+   both the older (edit-post) and newer (editor) class prefixes. */
+body.post-type-yowm_lesson .edit-post-meta-boxes-main,
+body.post-type-yowm_lesson .editor-meta-boxes-main,
+body.post-type-yowm_resource .edit-post-meta-boxes-main,
+body.post-type-yowm_resource .editor-meta-boxes-main,
+body.post-type-yowm_lesson .edit-post-layout__metaboxes,
+body.post-type-yowm_resource .edit-post-layout__metaboxes {
+  position: static !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  flex: none !important;
+}
+body.post-type-yowm_lesson .edit-post-meta-boxes-main .components-resizable-box__handle,
+body.post-type-yowm_lesson .editor-meta-boxes-main .components-resizable-box__handle,
+body.post-type-yowm_resource .edit-post-meta-boxes-main .components-resizable-box__handle,
+body.post-type-yowm_resource .editor-meta-boxes-main .components-resizable-box__handle {
+  display: none !important;
+}

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.23.0
+
+- Attempt to remove the Lesson/Resource meta-box slider with a CSS-only change: the options now flow at the bottom of the editor and scroll with the page instead of sitting in a fixed, draggable split panel. Full Gutenberg is kept, and the options can't be hidden by this change.
+
 ## 0.22.2
 
 - Lesson audio now uses the browser's native audio player instead of WordPress's script-based one. It needs no JavaScript, so it plays reliably on the front end even when the host's cache minifies or defers scripts (the likely reason it played in the Media Library but not on the site). Kept the rounded card, episode title, and download link.
