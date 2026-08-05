@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.20.0
+ * Version:     0.21.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.20.0' );
+define( 'YOWM_STUDIO_VERSION', '0.21.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -275,7 +275,9 @@ final class YOWM_Studio {
 				'show_in_rest' => true,
 				'show_in_menu' => false,
 				'has_archive'  => false,
-				'supports'     => array( 'title', 'editor', 'thumbnail', 'revisions', 'custom-fields' ),
+				// No 'editor': the cohort welcome text is a field in the Cohort box,
+				// so the big empty content editor is hidden entirely.
+				'supports'     => array( 'title', 'thumbnail', 'revisions', 'custom-fields' ),
 				'rewrite'      => false,
 				'menu_icon'    => 'dashicons-groups',
 			)
@@ -2211,7 +2213,9 @@ final class YOWM_Studio {
 		echo '<div class="yowm-note"><h3>Student access</h3>';
 		echo '<p>Classroom access is now managed with individual, invite-only student accounts.</p>';
 		echo '<p><a class="button" href="' . esc_url( add_query_arg( array( 'page' => 'yowm-student-access', 'cohort_id' => $post->ID ), admin_url( 'admin.php' ) ) ) . '">Manage this cohort roster</a></p></div>';
-		echo '<p class="description">Use the main editor for the cohort welcome text.</p>';
+		echo '<p class="yowm-field"><label for="yowm_welcome_text"><strong>Welcome text</strong></label>';
+		echo '<textarea id="yowm_welcome_text" name="yowm_welcome_text" rows="4" class="large-text">' . esc_textarea( (string) $post->post_content ) . '</textarea>';
+		echo '<span class="description">Shown at the top of the cohort classroom, under the year.</span></p>';
 
 		$podcast_enabled = (bool) get_post_meta( $post->ID, self::META_PODCAST_ENABLED, true );
 		$podcast_title   = get_post_meta( $post->ID, self::META_PODCAST_TITLE, true );
@@ -2557,6 +2561,17 @@ final class YOWM_Studio {
 			}
 		}
 
+		// Cohort welcome text lives in the post content (the block editor is hidden
+		// for cohorts). Same detach-to-avoid-recursion pattern.
+		if ( self::COHORT === $post->post_type && isset( $_POST['yowm_welcome_text'] ) ) {
+			$welcome = wp_kses_post( wp_unslash( $_POST['yowm_welcome_text'] ) );
+			if ( $welcome !== (string) $post->post_content ) {
+				remove_action( 'save_post', array( __CLASS__, 'save_meta' ), 10 );
+				wp_update_post( array( 'ID' => $post_id, 'post_content' => $welcome ) );
+				add_action( 'save_post', array( __CLASS__, 'save_meta' ), 10, 2 );
+			}
+		}
+
 		if ( self::COHORT === $post->post_type ) {
 			// WordPress's native post-password cookie remembers only one password.
 			// Migrate any value entered through Quick Edit, then clear it so the
@@ -2815,7 +2830,7 @@ final class YOWM_Studio {
 	}
 
 	public static function force_block_editor( bool $use_block_editor, string $post_type ): bool {
-		if ( in_array( $post_type, array( self::COHORT, self::LESSON, self::RESOURCE ), true ) ) {
+		if ( in_array( $post_type, array( self::LESSON, self::RESOURCE ), true ) ) {
 			return true;
 		}
 
@@ -2823,7 +2838,7 @@ final class YOWM_Studio {
 	}
 
 	public static function force_block_editor_for_post( bool $use_block_editor, WP_Post $post ): bool {
-		if ( in_array( $post->post_type, array( self::COHORT, self::LESSON, self::RESOURCE ), true ) ) {
+		if ( in_array( $post->post_type, array( self::LESSON, self::RESOURCE ), true ) ) {
 			return true;
 		}
 

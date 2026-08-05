@@ -173,6 +173,54 @@
   width: 100% !important;
 }
 
+/* 0.21.0: prettier audio player in the site palette */
+.yowm-audio-player .yowm-audio-filename {
+  margin: 0 0 .65rem;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+  color: var(--plum, #4a4063);
+  word-break: break-word;
+}
+.yowm-audio-player .mejs-container,
+.yowm-audio-player .mejs-controls,
+.yowm-audio-player audio {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.yowm-audio-player .mejs-controls {
+  background: var(--plum, #4a4063);
+}
+.yowm-audio-player .mejs-time-total,
+.yowm-audio-player .mejs-horizontal-volume-total {
+  background: rgba(255, 255, 255, .18);
+  border-radius: 6px;
+}
+.yowm-audio-player .mejs-time-loaded {
+  background: rgba(255, 255, 255, .28);
+  border-radius: 6px;
+}
+.yowm-audio-player .mejs-time-current,
+.yowm-audio-player .mejs-horizontal-volume-current,
+.yowm-audio-player .mejs-time-handle-content {
+  background: #f6c66b; /* warm accent from the site palette */
+  border-radius: 6px;
+}
+.yowm-audio-player .mejs-time-current {
+  border: 0;
+}
+.yowm-audio-download {
+  margin: .75rem 0 0;
+}
+.yowm-audio-download a {
+  font-family: "Inter", Arial, sans-serif;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--plum, #4a4063);
+  text-underline-offset: 3px;
+}
+
 .yowm-lesson-navigation {
   display: grid;
   grid-template-columns: 1fr auto 1fr;

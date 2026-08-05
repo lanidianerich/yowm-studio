@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.21.0
+
+- Lesson pages: moved the lecture audio to the top under a clearer "Listen to the audio lecture" heading.
+- Restyled the audio players in the site palette — rounded corners, plum controls — and added the file name above each player plus a download link beneath it (which also works if inline playback fails).
+- Cohorts: hid the empty block-editor "page." The Cohort screen now shows just the title and fields, with a simple Welcome text field in place of the old editor.
+
 ## 0.20.0
 
 - Added a "Podcast episode notes" field to the Lesson editor. It doubles as the lesson excerpt and the podcast episode description, and it's the field early WordPress posts used before the YOWM Studio migration. The feed now automatically appends a link back to the cohort classroom in each episode's notes.
