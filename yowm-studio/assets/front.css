@@ -1,0 +1,757 @@
+
+.yowm-studio-hero {
+  min-height: 52vh;
+  padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+.yowm-cohort-grid,
+.yowm-lesson-grid,
+.yowm-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.35rem;
+}
+
+.yowm-cohort-card,
+.yowm-lesson-card,
+.yowm-resource-card,
+.yowm-empty,
+.yowm-announcement .wide-container,
+.yowm-media-card {
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid rgba(74, 64, 99, .18);
+  border-radius: var(--radius, 18px);
+  background: rgba(255, 248, 239, .68);
+  box-shadow: 0 14px 35px rgba(74, 64, 99, .07);
+}
+
+.yowm-cohort-card,
+.yowm-lesson-card {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.yowm-cohort-card h3,
+.yowm-lesson-card h3 {
+  margin: 0 0 .85rem;
+}
+
+.yowm-cohort-card .button,
+.yowm-lesson-card .text-link {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.yowm-resource-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.yowm-resource-card {
+  color: var(--plum, #4a4063);
+  text-decoration: none;
+}
+
+.yowm-resource-card strong {
+  display: block;
+  margin-top: .35rem;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 1.15rem;
+}
+
+.yowm-resource-card:hover,
+.yowm-resource-card:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--coral, #ff674d);
+}
+
+.yowm-announcement {
+  padding: 0 0 2rem;
+}
+
+.yowm-announcement .wide-container {
+  border-left: 4px solid var(--coral, #ff674d);
+}
+
+.yowm-announcement p:last-child {
+  margin-bottom: 0;
+}
+
+.yowm-welcome {
+  margin-inline: 0;
+}
+
+.yowm-welcome > *:first-child {
+  margin-top: 0;
+}
+
+.yowm-welcome > *:last-child {
+  margin-bottom: 0;
+}
+
+.yowm-module-list {
+  display: grid;
+  gap: .8rem;
+}
+
+.yowm-module {
+  border: 1px solid rgba(74, 64, 99, .18);
+  border-radius: 14px;
+  background: rgba(255, 248, 239, .62);
+}
+
+.yowm-module summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  color: var(--plum, #4a4063);
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.yowm-module ol {
+  margin: 0;
+  padding: 0 1.2rem 1rem 3rem;
+}
+
+.yowm-module li {
+  padding-block: .25rem;
+}
+
+.yowm-password-form {
+  display: flex;
+  width: min(100%, 520px);
+  gap: .7rem;
+  margin: 1.5rem auto 0;
+}
+
+.yowm-password-form input {
+  flex: 1;
+  min-width: 0;
+  padding: .8rem .9rem;
+  border: 1px solid rgba(74, 64, 99, .28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .6);
+}
+
+.yowm-access-error {
+  color: var(--red, #c83e4d);
+  font-weight: 700;
+}
+
+.yowm-small-link {
+  margin-top: 1rem;
+  font-size: .9rem;
+}
+
+.yowm-video {
+  position: relative;
+  width: 100%;
+  margin-block: 1.5rem;
+  overflow: hidden;
+  border-radius: var(--radius, 18px);
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+
+.yowm-video iframe,
+.yowm-video video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.yowm-media-card {
+  margin-block: 1rem 1.75rem;
+}
+
+.yowm-media-card .mejs-container,
+.yowm-media-card audio {
+  width: 100% !important;
+}
+
+.yowm-lesson-navigation {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 2.5rem 4rem;
+  border-top: 1px solid rgba(74, 64, 99, .2);
+  font-family: "Inter", Arial, sans-serif;
+  font-size: .86rem;
+  font-weight: 700;
+}
+
+.yowm-lesson-navigation a,
+.yowm-back-link a,
+.yowm-classroom-footer-links a {
+  color: var(--plum, #4a4063);
+  text-underline-offset: 4px;
+}
+
+.yowm-next-link {
+  text-align: right;
+}
+
+.yowm-classroom-link {
+  text-align: center;
+}
+
+.yowm-back-link,
+.yowm-classroom-footer-links {
+  padding-bottom: 4rem;
+}
+
+@media (max-width: 760px) {
+  .yowm-cohort-grid,
+  .yowm-lesson-grid,
+  .yowm-resource-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yowm-password-form {
+    flex-direction: column;
+  }
+
+  .yowm-password-form .button {
+    width: 100%;
+  }
+
+  .yowm-lesson-navigation {
+    grid-template-columns: 1fr;
+  }
+
+  .yowm-next-link,
+  .yowm-classroom-link {
+    text-align: left;
+  }
+}
+
+.yowm-cohort-chooser {
+  min-height: calc(100vh - 5rem);
+  padding-top: clamp(4rem, 8vw, 7rem);
+}
+.yowm-cohort-chooser > .wide-container > .section-title {
+  margin-bottom: 1.5rem;
+}
+
+
+/* 0.2.3 cohort card simplification */
+.yowm-cohort-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 360px)); }
+.yowm-cohort-card { display:block; padding:0; overflow:hidden; color:var(--plum,#4a4063); text-decoration:none; }
+.yowm-cohort-card:hover,.yowm-cohort-card:focus-visible { transform:translateY(-2px); border-color:var(--coral,#ff674d); }
+.yowm-cohort-image { aspect-ratio:1/1; overflow:hidden; background:rgba(255,248,239,.68); }
+.yowm-cohort-image img { width:100%; height:100%; object-fit:cover; }
+.yowm-cohort-card h2 { margin:0; padding:1rem 1.25rem 1.15rem; font-size:clamp(2rem,4vw,3rem); text-align:center; }
+
+
+/* ======================================================
+   0.3.0: CALM CLASSROOM TYPOGRAPHY + RESOURCE SYSTEM
+   ====================================================== */
+
+.yowm-classroom-header,
+.yowm-reading-header {
+  padding: clamp(3rem, 6vw, 5rem) 0 clamp(2rem, 4vw, 3.25rem);
+}
+
+.yowm-classroom-header h1 {
+  margin: 0;
+  color: var(--plum, #4a4063);
+  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-size: clamp(3.2rem, 8vw, 6rem);
+  font-weight: 600;
+  line-height: .95;
+  letter-spacing: -.025em;
+}
+
+.yowm-classroom-header .yowm-welcome {
+  max-width: 780px;
+  margin-top: 1.25rem;
+  font-size: 1.12rem;
+}
+
+.yowm-classroom-header .yowm-welcome > *:first-child {
+  margin-top: 0;
+}
+
+.yowm-reading-container {
+  width: min(900px, calc(100% - 2.5rem));
+  margin-inline: auto;
+}
+
+.yowm-reading-header h1 {
+  max-width: 900px;
+  margin: 0;
+  color: var(--plum, #4a4063);
+  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -.02em;
+}
+
+.yowm-reading-layout {
+  width: min(1180px, calc(100% - 2.5rem));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(190px, 230px) minmax(0, 900px);
+  justify-content: center;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.yowm-reading-layout .entry-content {
+  width: 100%;
+  margin: 0;
+}
+
+.yowm-reading-layout .entry-content h2 {
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+}
+
+.yowm-reading-layout .entry-content h3 {
+  font-size: clamp(1.45rem, 2.3vw, 1.9rem);
+}
+
+.yowm-resource-group {
+  margin-top: 2.5rem;
+}
+
+.yowm-resource-group > h3 {
+  margin: 0 0 1rem;
+  color: var(--plum, #4a4063);
+  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-weight: 600;
+}
+
+.yowm-resource-card {
+  display: block;
+  min-height: 100%;
+}
+
+.yowm-resource-card small {
+  display: block;
+  margin-top: .55rem;
+  color: var(--ink, #2f2a36);
+  font-size: .92rem;
+  line-height: 1.45;
+}
+
+.yowm-information-card p {
+  margin: .65rem 0 0;
+  line-height: 1.55;
+}
+
+.yowm-information-card .text-link {
+  display: inline-block;
+  margin-top: .8rem;
+}
+
+.yowm-resources-section {
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+}
+
+/* Plugin templates must not inherit the theme's giant marketing-title rules. */
+.yowm-cohort-page .section-title,
+.yowm-resource-page .section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+@media (max-width: 980px) {
+  .yowm-reading-layout {
+    width: min(900px, calc(100% - 2.5rem));
+    grid-template-columns: 1fr;
+  }
+
+  .yowm-reading-layout .page-outline {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .yowm-reading-container,
+  .yowm-reading-layout {
+    width: calc(100% - 1.35rem);
+  }
+
+  .yowm-classroom-header h1 {
+    font-size: clamp(3rem, 18vw, 4.8rem);
+  }
+
+  .yowm-reading-header h1 {
+    font-size: clamp(2.2rem, 11vw, 3.2rem);
+  }
+}
+
+
+/* 0.3.2: clearer resource actions */
+.yowm-resource-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+}
+
+.yowm-resource-button {
+  margin: 0;
+}
+
+.yowm-information-card > strong,
+.yowm-resource-page > strong {
+  display: block;
+  margin-top: 0;
+}
+
+.yowm-resource-page {
+  text-decoration: none;
+}
+
+
+/* 0.3.3: formatted information cards + calm lesson titles */
+.yowm-information-card-content {
+  margin-top: .7rem;
+  line-height: 1.55;
+}
+
+.yowm-information-card-content > *:first-child {
+  margin-top: 0;
+}
+
+.yowm-information-card-content > *:last-child {
+  margin-bottom: 0;
+}
+
+.yowm-information-card-content ul,
+.yowm-information-card-content ol {
+  padding-left: 1.25rem;
+}
+
+.yowm-information-card-content a {
+  color: var(--red, #c83e4d);
+  text-underline-offset: 3px;
+}
+
+.yowm-lesson-page .yowm-reading-header h1 {
+  max-width: 900px;
+  font-size: clamp(2.5rem, 5vw, 4.1rem);
+  line-height: 1.03;
+}
+
+.yowm-lesson-page .yowm-reading-layout {
+  padding-bottom: 1rem;
+}
+
+
+/* 0.3.4: prevent long Resource pages from collapsing into the outline column */
+.yowm-reading-layout > .entry-content {
+  grid-column: 2;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* When the automatic outline has too few real headings and hides itself,
+   remove the empty sidebar column and center the article. */
+.yowm-reading-layout:has(.page-outline[hidden]) {
+  grid-template-columns: minmax(0, 900px);
+}
+
+.yowm-reading-layout:has(.page-outline[hidden]) > .entry-content {
+  grid-column: 1;
+}
+
+@media (max-width: 980px) {
+  .yowm-reading-layout > .entry-content {
+    grid-column: 1;
+  }
+}
+
+
+/* 0.4.0: Library outline is always available */
+.yowm-resource-page .page-outline[hidden] {
+  display: block !important;
+}
+
+.yowm-resource-page .yowm-reading-layout:has(.page-outline[hidden]) {
+  grid-template-columns: minmax(190px, 230px) minmax(0, 900px);
+}
+
+.yowm-resource-page .yowm-reading-layout:has(.page-outline[hidden]) > .entry-content {
+  grid-column: 2;
+}
+
+.yowm-outline-back {
+  display: block;
+  margin: 0 0 .8rem;
+  color: var(--plum, #4a4063);
+  font-family: "Inter", Arial, sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 980px) {
+  .yowm-resource-page .yowm-reading-layout:has(.page-outline[hidden]) {
+    grid-template-columns: 1fr;
+  }
+
+  .yowm-resource-page .yowm-reading-layout:has(.page-outline[hidden]) > .entry-content {
+    grid-column: 1;
+  }
+}
+
+
+/* 0.5.0: Now / Coming Up / archives */
+.yowm-now-card {
+  padding: clamp(1.8rem, 4vw, 3rem);
+  border: 1px solid rgba(74, 64, 99, .18);
+  border-radius: var(--radius, 18px);
+  background: rgba(255, 248, 239, .76);
+  box-shadow: 0 18px 46px rgba(74, 64, 99, .08);
+}
+
+.yowm-now-card h3 {
+  max-width: 880px;
+  margin: .35rem 0 1rem;
+  color: var(--plum, #4a4063);
+  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  line-height: 1.02;
+}
+
+.yowm-coming-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.4rem 1.6rem;
+  border-left: 4px solid var(--coral, #ff674d);
+  background: rgba(255, 248, 239, .58);
+}
+
+.yowm-coming-card h3 {
+  margin: .25rem 0 0;
+  color: var(--plum, #4a4063);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.yowm-release-date {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 700;
+  text-align: right;
+}
+
+.yowm-section-heading-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.yowm-section-heading-row .section-title {
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 700px) {
+  .yowm-coming-card,
+  .yowm-section-heading-row {
+    display: block;
+  }
+
+  .yowm-release-date {
+    margin-top: 1rem;
+    text-align: left;
+  }
+}
+
+
+/* 0.5.1: lesson embeds and On Deck refinements */
+.yowm-video iframe {
+  display: block;
+}
+
+.yowm-video-fallback {
+  margin-top: .65rem;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: .85rem;
+}
+
+.yowm-video-fallback a {
+  color: var(--plum, #4a4063);
+  text-underline-offset: 3px;
+}
+
+.yowm-next-card {
+  margin-top: 1.1rem;
+  padding: clamp(1.35rem, 3vw, 2rem);
+  border: 1px solid rgba(74, 64, 99, .16);
+  border-left: 4px solid var(--coral, #ff674d);
+  border-radius: var(--radius, 18px);
+  background: rgba(255, 248, 239, .5);
+}
+
+.yowm-next-card h3 {
+  margin: .3rem 0 .7rem;
+  color: var(--plum, #4a4063);
+  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.7rem);
+  line-height: 1.05;
+}
+
+.yowm-next-card .yowm-release-date {
+  margin-top: 1rem;
+  text-align: left;
+}
+
+
+/* 0.7.0: accessible lecture transcripts */
+.yowm-transcript { margin-top: 2rem; }
+.yowm-transcript details {
+  border: 1px solid rgba(74, 64, 99, .16);
+  border-radius: 12px;
+  background: rgba(255, 248, 239, .55);
+}
+.yowm-transcript summary {
+  padding: 1rem 1.15rem;
+  color: var(--plum, #4a4063);
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+.yowm-transcript-content {
+  padding: 0 1.15rem 1.15rem;
+  line-height: 1.65;
+}
+
+
+/* 0.7.1: persistent cohort navigation */
+.yowm-cohort-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid rgba(74, 64, 99, .14);
+  background: rgba(255, 239, 219, .96);
+  backdrop-filter: blur(10px);
+}
+
+.admin-bar .yowm-cohort-nav {
+  top: 32px;
+}
+
+.yowm-cohort-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(.85rem, 2.4vw, 1.7rem);
+  min-height: 48px;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.yowm-cohort-nav a {
+  color: var(--plum, #4a4063);
+  text-decoration: none;
+}
+
+.yowm-cohort-nav a:hover,
+.yowm-cohort-nav a:focus-visible,
+.yowm-cohort-nav a[aria-current="page"] {
+  color: var(--coral, #ff674d);
+}
+
+.yowm-cohort-nav .yowm-change-cohort {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+@media (max-width: 782px) {
+  .admin-bar .yowm-cohort-nav { top: 46px; }
+}
+
+@media (max-width: 620px) {
+  .yowm-cohort-nav-inner {
+    flex-wrap: wrap;
+    gap: .4rem 1rem;
+    padding-block: .55rem;
+  }
+
+  .yowm-cohort-nav .yowm-change-cohort {
+    width: 100%;
+    margin-left: 0;
+    font-size: .75rem;
+  }
+}
+
+
+/* 0.8.0: reliable cohort navigation */
+.yowm-cohort-view .menu-toggle,
+.yowm-cohort-view .site-header .site-nav {
+  display: none !important;
+}
+.yowm-cohort-nav {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.yowm-resource-button[data-yowm-copy-url] { cursor: pointer; }
+
+
+/* 0.10.0: clearer transcript access */
+.yowm-transcript summary {
+  min-height: 48px;
+}
+
+
+/* 0.12.0: individual student account login */
+.yowm-account-login {
+  width: min(100%, 520px);
+  margin: 1.5rem auto 0;
+  padding: 1.4rem;
+  border: 1px solid rgba(74, 64, 99, .16);
+  border-radius: 16px;
+  background: rgba(255, 248, 239, .76);
+}
+.yowm-account-login p { margin: 0; }
+.yowm-account-login p + p { margin-top: 1rem; }
+.yowm-account-login label {
+  display: block;
+  margin-bottom: .35rem;
+  font-family: Inter, Arial, sans-serif;
+  font-size: .78rem;
+  font-weight: 800;
+}
+.yowm-account-login input[type="text"],
+.yowm-account-login input[type="password"] {
+  width: 100%;
+  min-height: 48px;
+}
+.yowm-account-login .login-remember label {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-weight: 600;
+}
+.yowm-account-login .login-submit input { width: 100%; }
+
+
+/* 0.12.5: signed-in student identity */
+.yowm-welcome {
+  margin-right: auto;
+  color: inherit;
+  font-family: Inter, Arial, sans-serif;
+  font-size: .78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .yowm-welcome {
+    flex-basis: 100%;
+    margin-right: 0;
+  }
+}
