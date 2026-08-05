@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.13.3
+ * Version:     0.14.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.13.3' );
+define( 'YOWM_STUDIO_VERSION', '0.14.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -2819,3 +2819,20 @@ require_once YOWM_STUDIO_DIR . 'admin-simplify.php';
 YOWM_Student_Access::init();
 YOWM_Admin_Simplify::init();
 YOWM_Studio::init();
+
+/*
+ * One-click updates from GitHub.
+ *
+ * Checks https://github.com/lanidianerich/yowm-studio for new releases so that
+ * YOWM Studio appears in the normal WordPress Plugins → Update list. Each release
+ * carries a built yowm-studio-<version>.zip asset, which is what gets installed.
+ */
+require_once YOWM_STUDIO_DIR . 'lib/plugin-update-checker/plugin-update-checker.php';
+
+$yowm_update_checker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+	'https://github.com/lanidianerich/yowm-studio/',
+	YOWM_STUDIO_FILE,
+	'yowm-studio'
+);
+
+$yowm_update_checker->getVcsApi()->enableReleaseAssets();

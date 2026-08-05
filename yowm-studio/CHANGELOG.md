@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.0
+
+- Added one-click updates: YOWM Studio now checks its GitHub repository and appears in the normal WordPress Plugins → Update list. After installing this version once, future updates install with a single click — no more zip uploads.
+
 ## 0.13.3
 
 - Simplified the wrong-cohort screen: removed the "Sign in with a different account" button (there is only ever one login per student) and made "Email Lani" the primary button.
