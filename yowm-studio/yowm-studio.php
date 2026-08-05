@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.23.0
+ * Version:     0.24.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.23.0' );
+define( 'YOWM_STUDIO_VERSION', '0.24.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -1614,30 +1614,15 @@ final class YOWM_Studio {
 
 	public static function admin_menu(): void {
 		add_menu_page( 'YOWM Studio', 'YOWM Studio', 'edit_posts', 'yowm-studio', array( __CLASS__, 'dashboard' ), 'dashicons-welcome-learn-more', 3 );
+		// Ordered by how often Lani uses them (daily first, yearly last).
 		add_submenu_page( 'yowm-studio', 'Dashboard', 'Dashboard', 'edit_posts', 'yowm-studio', array( __CLASS__, 'dashboard' ) );
-		add_submenu_page( 'yowm-studio', 'Cohorts', 'Cohorts', 'edit_posts', 'edit.php?post_type=' . self::COHORT );
-		add_submenu_page( 'yowm-studio', 'Modules', 'Modules', 'manage_categories', 'edit-tags.php?taxonomy=' . self::MODULE . '&post_type=' . self::LESSON );
 		add_submenu_page( 'yowm-studio', 'Lessons', 'Lessons', 'edit_posts', 'edit.php?post_type=' . self::LESSON );
 		add_submenu_page( 'yowm-studio', 'Class Info', 'Class Info', 'edit_posts', 'yowm-studio-resources', array( __CLASS__, 'resources_page' ) );
+		add_submenu_page( 'yowm-studio', 'Students', 'Students', 'manage_options', 'yowm-student-access', array( 'YOWM_Student_Access', 'admin_page' ) );
+		add_submenu_page( 'yowm-studio', 'Cohorts', 'Cohorts', 'edit_posts', 'edit.php?post_type=' . self::COHORT );
+		add_submenu_page( 'yowm-studio', 'Modules', 'Modules', 'manage_categories', 'edit-tags.php?taxonomy=' . self::MODULE . '&post_type=' . self::LESSON );
 		add_submenu_page( 'yowm-studio', 'Settings', 'Settings', 'manage_options', 'yowm-studio-settings', array( __CLASS__, 'settings_page' ) );
-
-		add_submenu_page(
-			'yowm-studio',
-			'Students',
-			'Students',
-			'manage_options',
-			'yowm-student-access',
-			array( 'YOWM_Student_Access', 'admin_page' )
-		);
-
-		add_submenu_page(
-			'yowm-studio',
-			'System Diagnostics',
-			'System Diagnostics',
-			'manage_options',
-			'yowm-system-diagnostics',
-			array( __CLASS__, 'system_diagnostics' )
-		);
+		add_submenu_page( 'yowm-studio', 'System Diagnostics', 'System Diagnostics', 'manage_options', 'yowm-system-diagnostics', array( __CLASS__, 'system_diagnostics' ) );
 	}
 
 	public static function keep_studio_menu_open( string $parent_file ): string {

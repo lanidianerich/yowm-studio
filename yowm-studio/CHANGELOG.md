@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.24.0
+
+- Reordered the YOWM Studio submenu by how often it's used: Dashboard, Lessons, Class Info, Students, Cohorts, Modules, Settings, System Diagnostics.
+
 ## 0.23.0
 
 - Attempt to remove the Lesson/Resource meta-box slider with a CSS-only change: the options now flow at the bottom of the editor and scroll with the page instead of sitting in a fixed, draggable split panel. Full Gutenberg is kept, and the options can't be hidden by this change.
