@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.19.0
+
+- Fixed lesson and Class Info links pointing to the wrong year. Opening a lesson from inside a cohort now keeps you in that cohort's year (e.g. a lesson clicked in /2026/ stays on /2026/) instead of jumping to the lesson's first-assigned year, which could 404 if that year's copy hasn't been released yet.
+
 ## 0.18.0
 
 - Fixed a fatal error (critical-error page) when opening a lesson that can't be resolved for its cohort — for example a lesson that isn't assigned to that year yet. The router now serves a normal 404, and the lesson and Class Info templates degrade to a calm "not available" message instead of white-screening.

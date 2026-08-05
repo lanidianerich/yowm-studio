@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.18.0
+ * Version:     0.19.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.18.0' );
+define( 'YOWM_STUDIO_VERSION', '0.19.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -601,6 +601,17 @@ final class YOWM_Studio {
 		}
 
 		if ( self::LESSON === $post->post_type ) {
+			// Keep the link inside the cohort the reader is currently viewing, so a
+			// lesson opened from /2026/ stays on /2026/ instead of jumping to the
+			// lesson's first-assigned year.
+			$current_year = absint( get_query_var( 'yowm_cohort_year' ) );
+			if ( $current_year ) {
+				$current_cohort = self::get_cohort_by_year( $current_year );
+				if ( $current_cohort && self::lesson_applies_to_cohort( $post->ID, (int) $current_cohort->ID ) ) {
+					return home_url( '/' . $current_year . '/' . $post->post_name . '/' );
+				}
+			}
+
 			$cohort_ids = self::lesson_cohort_ids( $post->ID );
 
 			if ( empty( $cohort_ids ) ) {
@@ -615,9 +626,19 @@ final class YOWM_Studio {
 		}
 
 		if ( self::RESOURCE === $post->post_type ) {
-			$cohort_ids = self::resource_cohort_ids( $post->ID );
-			$cohort_id  = $cohort_ids ? (int) $cohort_ids[0] : 0;
-			$year       = self::cohort_year( $cohort_id );
+			$ids = self::resource_cohort_ids( $post->ID );
+
+			// Same rule: stay in the cohort currently being viewed when it applies.
+			$current_year = absint( get_query_var( 'yowm_cohort_year' ) );
+			if ( $current_year ) {
+				$current_cohort = self::get_cohort_by_year( $current_year );
+				if ( $current_cohort && ( empty( $ids ) || in_array( (int) $current_cohort->ID, $ids, true ) ) ) {
+					return home_url( '/' . $current_year . '/resources/' . $post->post_name . '/' );
+				}
+			}
+
+			$cohort_id = $ids ? (int) $ids[0] : 0;
+			$year      = self::cohort_year( $cohort_id );
 			return $year ? home_url( '/' . $year . '/resources/' . $post->post_name . '/' ) : $permalink;
 		}
 
