@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.15.0
+
+- Added a moderator toggle to the Students roster: a "Can edit" checkbox turns a student into a workshop assistant who can edit all YOWM content (Cohorts, Lessons, Class Info, Media) while keeping their student account and personal podcast feed, and while staying locked out of Students, Settings, and Plugins. One login, no second account.
+- Fixed the Invite-a-student form so the Email field is the same width as First and Last name.
+
 ## 0.14.0
 
 - Added one-click updates: YOWM Studio now checks its GitHub repository and appears in the normal WordPress Plugins → Update list. After installing this version once, future updates install with a single click — no more zip uploads.

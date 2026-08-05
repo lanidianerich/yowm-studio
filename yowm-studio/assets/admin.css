@@ -614,3 +614,11 @@
 
 /* 0.13.0 unified students */
 .yowm-invite-fields{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:12px}.yowm-invite-fields input[type=text],.yowm-invite-fields input[type=email],.yowm-invite-fields input:not([type]){display:block;width:100%;margin-top:5px}.yowm-invite-fields fieldset{grid-column:1/-1}.yowm-unified-roster input[type=text],.yowm-unified-roster input:not([type]){width:130px}.yowm-unified-roster input.code{width:260px}.yowm-unified-roster td{vertical-align:top}.yowm-cohort-checks label{display:inline-block;margin:0 8px 5px 0}.yowm-pending{background:#fff9e6!important}@media(max-width:900px){.yowm-invite-fields{grid-template-columns:1fr}}
+
+/* 0.15.0: even invite fields (Email was rendering wider) + moderator checkbox */
+.yowm-invite-fields > p { margin: 0; }
+.yowm-invite-fields label { display: block; font-weight: 600; }
+.yowm-invite-fields input[type=text],
+.yowm-invite-fields input[type=email],
+.yowm-invite-fields input:not([type]) { box-sizing: border-box; width: 100%; }
+.yowm-mod-check { white-space: nowrap; }
