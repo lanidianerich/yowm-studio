@@ -25,8 +25,8 @@ if ( $resource_slug ) {
 			<h1><?php echo esc_html( $cohort ? (string) $year : 'Classroom' ); ?></h1>
 			<?php if ( is_user_logged_in() ) : ?>
 				<p class="hero-deck">You're signed in, but this account doesn't have access to the <?php echo esc_html( (string) $year ); ?> cohort.</p>
-				<p>Use the email address that received your classroom invitation, or <a href="mailto:lani@lanidianerich.com">email Lani</a> if your access should be here.</p>
-				<p><a class="button" href="<?php echo esc_url( wp_logout_url( $redirect ) ); ?>">Sign in with a different account</a></p>
+				<p>If your access should be here, let Lani know and she'll sort it out.</p>
+				<p><a class="button" href="mailto:lani@lanidianerich.com">Email Lani</a></p>
 			<?php else : ?>
 				<p class="hero-deck">Welcome back. Sign in with the email address you used for the class.</p>
 				<div class="yowm-account-login">

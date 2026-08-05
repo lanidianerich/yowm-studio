@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.3
+
+- Simplified the wrong-cohort screen: removed the "Sign in with a different account" button (there is only ever one login per student) and made "Email Lani" the primary button.
+
 ## 0.13.2
 
 - Added a simplified admin menu for administrators: shows only YOWM Studio, Media, Plugins, and Settings by default.
