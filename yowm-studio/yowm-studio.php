@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.19.0
+ * Version:     0.20.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.19.0' );
+define( 'YOWM_STUDIO_VERSION', '0.20.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -310,7 +310,7 @@ final class YOWM_Studio {
 				'show_in_rest' => true,
 				'show_in_menu' => false,
 				'has_archive'  => false,
-				'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'custom-fields' ),
+				'supports'     => array( 'title', 'editor', 'thumbnail', 'revisions', 'page-attributes', 'custom-fields' ), // excerpt handled by the YOWM "Podcast episode notes" field
 				'taxonomies'   => array( self::MODULE ),
 				'rewrite'      => false,
 				'menu_icon'    => 'dashicons-welcome-learn-more',
@@ -1114,7 +1114,7 @@ final class YOWM_Studio {
 		<guid isPermaLink="false"><?php echo esc_xml( $episode['guid'] ); ?></guid>
 		<pubDate><?php echo esc_xml( gmdate( DATE_RSS, $episode['published'] ) ); ?></pubDate>
 		<description><?php echo esc_xml( $episode['description'] ); ?></description>
-		<content:encoded><![CDATA[<?php echo wp_kses_post( wpautop( $episode['description'] ) ); ?>]]></content:encoded>
+		<content:encoded><![CDATA[<?php echo wp_kses_post( wpautop( $episode['description'] ) ); ?><p><a href="<?php echo esc_url( home_url( '/' . $year . '/' ) ); ?>"><?php echo esc_html( (string) $year ); ?> classroom &rarr;</a></p>]]></content:encoded>
 		<enclosure url="<?php echo esc_url( $episode['audio']['url'] ); ?>" length="<?php echo esc_attr( (string) $episode['audio']['length'] ); ?>" type="<?php echo esc_attr( $episode['audio']['mime'] ); ?>" />
 		<itunes:summary><?php echo esc_xml( $episode['description'] ); ?></itunes:summary>
 		<itunes:episodeType>full</itunes:episodeType>
@@ -2321,6 +2321,12 @@ final class YOWM_Studio {
 			<?php endif; ?>
 		</div>
 
+		<div class="yowm-episode-notes">
+			<p><strong>Podcast episode notes</strong></p>
+			<textarea name="yowm_episode_notes" rows="4" class="large-text" placeholder="Shown as the episode description in podcast apps, and as this lesson's excerpt."><?php echo esc_textarea( (string) $post->post_excerpt ); ?></textarea>
+			<p class="description">Used as the podcast episode notes and the lesson excerpt. A link back to the cohort classroom is added automatically in the feed.</p>
+		</div>
+
 		<div class="yowm-preview">
 			<strong>Reusable lesson:</strong> the Gutenberg post and post audio remain the same from year to year. Live-session video and audio are stored separately for each cohort.
 		</div>
@@ -2537,6 +2543,17 @@ final class YOWM_Studio {
 				} else {
 					update_post_meta( $post_id, $settings[0], $value );
 				}
+			}
+		}
+
+		// Lesson podcast episode notes live in the post excerpt. Detach this hook
+		// while saving so wp_update_post doesn't trigger save_meta recursively.
+		if ( self::LESSON === $post->post_type && isset( $_POST['yowm_episode_notes'] ) ) {
+			$notes = sanitize_textarea_field( wp_unslash( $_POST['yowm_episode_notes'] ) );
+			if ( $notes !== (string) $post->post_excerpt ) {
+				remove_action( 'save_post', array( __CLASS__, 'save_meta' ), 10 );
+				wp_update_post( array( 'ID' => $post_id, 'post_excerpt' => $notes ) );
+				add_action( 'save_post', array( __CLASS__, 'save_meta' ), 10, 2 );
 			}
 		}
 

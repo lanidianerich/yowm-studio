@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.20.0
+
+- Added a "Podcast episode notes" field to the Lesson editor. It doubles as the lesson excerpt and the podcast episode description, and it's the field early WordPress posts used before the YOWM Studio migration. The feed now automatically appends a link back to the cohort classroom in each episode's notes.
+- Removed Gutenberg's separate Excerpt panel on lessons so there is a single, clear place to write episode notes.
+
 ## 0.19.0
 
 - Fixed lesson and Class Info links pointing to the wrong year. Opening a lesson from inside a cohort now keeps you in that cohort's year (e.g. a lesson clicked in /2026/ stays on /2026/) instead of jumping to the lesson's first-assigned year, which could 404 if that year's copy hasn't been released yet.
