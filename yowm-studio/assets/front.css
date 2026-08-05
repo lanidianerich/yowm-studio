@@ -174,7 +174,7 @@
 }
 
 /* 0.21.0: prettier audio player in the site palette */
-.yowm-audio-player .yowm-audio-filename {
+.yowm-audio-player .yowm-audio-title {
   margin: 0 0 .65rem;
   font-family: "Inter", Arial, sans-serif;
   font-size: .82rem;

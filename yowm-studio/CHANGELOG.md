@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.22.1
+
+- Reverted the 0.22.0 sidebar change, which hid the Lesson/Resource options instead of moving them. The Lesson editor options are back and working.
+- Lesson audio players now show the episode title (the name that appears in the podcast) instead of the raw file name.
+- Fixed lesson audio not playing: WordPress's audio-player library is now loaded up front on classroom pages, so the inline player initializes reliably.
+
 ## 0.22.0
 
 - Removed the dreaded meta-box slider on the Lesson and Resource editors. Their options (Lesson details, Lesson recordings) now live in the editor's Settings sidebar — click the gear/Settings icon to reach them — with the sidebar widened so everything fits comfortably. Full Gutenberg block editing is kept.
