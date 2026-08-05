@@ -27,7 +27,7 @@ if ( $yowm_nav_user && $yowm_nav_user->exists() ) {
 		<?php endif; ?>
 		<a href="<?php echo esc_url( home_url( '/' . $yowm_nav_year . '/' ) ); ?>"
 			<?php echo $yowm_nav_path === (string) $yowm_nav_year ? 'aria-current="page"' : ''; ?>>
-			Classroom home
+			<?php echo esc_html( (string) $yowm_nav_year ); ?> home
 		</a>
 		<a href="<?php echo esc_url( home_url( '/' . $yowm_nav_year . '/lessons/' ) ); ?>"
 			<?php echo str_starts_with( $yowm_nav_path, $yowm_nav_year . '/lessons' ) ? 'aria-current="page"' : ''; ?>>

@@ -686,7 +686,7 @@
 .yowm-cohort-nav {
   position: sticky;
   top: 0;
-  z-index: 40;
+  z-index: 1001; /* above the theme's sticky .site-header (z-index: 1000) */
   border-bottom: 1px solid rgba(74, 64, 99, .14);
   background: rgba(255, 239, 219, .96);
   backdrop-filter: blur(10px);
@@ -745,6 +745,11 @@
 .yowm-cohort-view .menu-toggle,
 .yowm-cohort-view .site-header .site-nav {
   display: none !important;
+}
+/* The theme's own header is sticky (z-index 1000) and would cover the cohort
+   nav on scroll. On cohort pages, let it scroll away so the cohort nav stays. */
+.yowm-cohort-view .site-header {
+  position: static !important;
 }
 .yowm-cohort-nav {
   display: block !important;

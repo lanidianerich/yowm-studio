@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.26.0
+
+- The cohort navigation bar now stays put on scroll. It was being covered by the theme's own sticky header; on cohort pages that header now scrolls away and the cohort nav sits above it.
+- Renamed the "Classroom home" nav link to "{year} home" (e.g. "2026 home").
+
 ## 0.25.0
 
 - Removed the Lesson/Resource meta-box drag-slider for real, now that the editor's actual markup is known: the "Drag to resize" handle is hidden and the options panel sizes to its content and scrolls with the page. Still CSS-only, so it can't hide the boxes or affect saving.
