@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.25.0
+
+- Removed the Lesson/Resource meta-box drag-slider for real, now that the editor's actual markup is known: the "Drag to resize" handle is hidden and the options panel sizes to its content and scrolls with the page. Still CSS-only, so it can't hide the boxes or affect saving.
+
 ## 0.24.0
 
 - Reordered the YOWM Studio submenu by how often it's used: Dashboard, Lessons, Class Info, Students, Cohorts, Modules, Settings, System Diagnostics.

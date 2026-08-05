@@ -643,26 +643,22 @@
 .yowm-muted { color: #888; }
 .yowm-unified-roster select { max-width: 120px; }
 
-/* 0.23.0: de-slider the block-editor meta-box area on YOWM screens. Let the
-   options flow at the bottom and scroll with the page instead of living in a
-   fixed, draggable split panel. CSS only — it cannot hide the boxes. Targets
-   both the older (edit-post) and newer (editor) class prefixes. */
+/* 0.25.0: remove the block-editor meta-box drag-slider on YOWM lesson/resource
+   screens, using the real WP 7.0 markup. Hide the "Drag to resize" handle and
+   let the meta-box panel size to its content and scroll with the page. CSS only
+   — it cannot hide the boxes or affect saving. */
+body.post-type-yowm_lesson .edit-post-meta-boxes-main__presenter button[role="separator"],
+body.post-type-yowm_resource .edit-post-meta-boxes-main__presenter button[role="separator"] {
+  display: none !important;
+}
 body.post-type-yowm_lesson .edit-post-meta-boxes-main,
-body.post-type-yowm_lesson .editor-meta-boxes-main,
-body.post-type-yowm_resource .edit-post-meta-boxes-main,
-body.post-type-yowm_resource .editor-meta-boxes-main,
-body.post-type-yowm_lesson .edit-post-layout__metaboxes,
-body.post-type-yowm_resource .edit-post-layout__metaboxes {
-  position: static !important;
+body.post-type-yowm_resource .edit-post-meta-boxes-main {
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
-  overflow: visible !important;
-  flex: none !important;
+  flex: 0 0 auto !important;
 }
-body.post-type-yowm_lesson .edit-post-meta-boxes-main .components-resizable-box__handle,
-body.post-type-yowm_lesson .editor-meta-boxes-main .components-resizable-box__handle,
-body.post-type-yowm_resource .edit-post-meta-boxes-main .components-resizable-box__handle,
-body.post-type-yowm_resource .editor-meta-boxes-main .components-resizable-box__handle {
-  display: none !important;
+body.post-type-yowm_lesson .interface-interface-skeleton__content,
+body.post-type-yowm_resource .interface-interface-skeleton__content {
+  overflow-y: auto !important;
 }
