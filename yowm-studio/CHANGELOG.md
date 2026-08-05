@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.16.0
+
+- Student-facing classroom pages now open every external link (anything leaving the site, like Discord or Zoom) in a new tab, so students never lose their place. Internal classroom navigation still opens in the same tab.
+
 ## 0.15.0
 
 - Added a moderator toggle to the Students roster: a "Can edit" checkbox turns a student into a workshop assistant who can edit all YOWM content (Cohorts, Lessons, Class Info, Media) while keeping their student account and personal podcast feed, and while staying locked out of Students, Settings, and Plugins. One login, no second account.
