@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.1
+
+- Made "contact Lani" on the no-access screen a clickable mailto link to lani@lanidianerich.com.
+
 ## 0.13.0
 
 - Added a unified all-years student roster.
