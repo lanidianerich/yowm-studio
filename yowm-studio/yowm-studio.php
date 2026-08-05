@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Studio
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.21.0
+ * Version:     0.22.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.21.0' );
+define( 'YOWM_STUDIO_VERSION', '0.22.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -2198,10 +2198,14 @@ final class YOWM_Studio {
 	}
 
 	public static function meta_boxes(): void {
+		// Cohort uses the classic screen (no block editor), so 'normal' sits cleanly
+		// under the title. Lesson and Resource use the block editor, so their boxes
+		// go in the 'side' context — the editor Settings sidebar — to avoid the
+		// bottom meta-box slider entirely.
 		add_meta_box( 'yowm-cohort-details', 'Cohort details', array( __CLASS__, 'cohort_box' ), self::COHORT, 'normal', 'high' );
-		add_meta_box( 'yowm-lesson-details', 'Lesson details', array( __CLASS__, 'lesson_box' ), self::LESSON, 'normal', 'high' );
-		add_meta_box( 'yowm-lesson-media', 'Lesson recordings', array( __CLASS__, 'lesson_media_box' ), self::LESSON, 'normal', 'default' );
-		add_meta_box( 'yowm-resource-details', 'Resource details', array( __CLASS__, 'resource_box' ), self::RESOURCE, 'normal', 'high' );
+		add_meta_box( 'yowm-lesson-details', 'Lesson details', array( __CLASS__, 'lesson_box' ), self::LESSON, 'side', 'high' );
+		add_meta_box( 'yowm-lesson-media', 'Lesson recordings', array( __CLASS__, 'lesson_media_box' ), self::LESSON, 'side', 'default' );
+		add_meta_box( 'yowm-resource-details', 'Resource details', array( __CLASS__, 'resource_box' ), self::RESOURCE, 'side', 'high' );
 	}
 
 	public static function cohort_box( WP_Post $post ): void {

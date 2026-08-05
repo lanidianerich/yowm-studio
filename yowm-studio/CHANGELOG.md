@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.0
+
+- Removed the dreaded meta-box slider on the Lesson and Resource editors. Their options (Lesson details, Lesson recordings) now live in the editor's Settings sidebar — click the gear/Settings icon to reach them — with the sidebar widened so everything fits comfortably. Full Gutenberg block editing is kept.
+
 ## 0.21.0
 
 - Lesson pages: moved the lecture audio to the top under a clearer "Listen to the audio lecture" heading.
