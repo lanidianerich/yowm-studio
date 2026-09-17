@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.29.0
+
+- Restyled the quick-links rail to match the lesson pages' "On this page" sidebar — a calm cream card with plain text links instead of pill buttons.
+- Styled the cohort home's welcome text (under the year) in italics so it can carry the workshop mission. Put the mission in the cohort's Welcome text field and it appears italicized right under the year.
+
 ## 0.28.0
 
 - Replaced the confusing "On deck" area on the cohort home with two matching cards: **Previous Lesson** (the latest released lesson) and **Coming Up** (the next one — title and date only). Coming Up hides itself when nothing is scheduled next.
