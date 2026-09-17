@@ -3,7 +3,7 @@
  * Plugin Name: YOWM Classroom
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.27.0
+ * Version:     0.28.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.27.0' );
+define( 'YOWM_STUDIO_VERSION', '0.28.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -1341,6 +1341,48 @@ final class YOWM_Studio {
 				}
 			)
 		);
+	}
+
+	/**
+	 * Renders the classroom quick-links rail (link + podcast resources), used
+	 * identically on the cohort home and the Class Info page so the two match.
+	 * Outputs nothing when the cohort has no quick links, so the layout can
+	 * collapse to a single column.
+	 */
+	public static function render_quick_links_rail( int $cohort_id, int $year ): void {
+		$links = array_values(
+			array_filter(
+				self::get_cohort_resources( $cohort_id ),
+				static fn( WP_Post $r ): bool =>
+					in_array( self::resource_type( $r->ID ), array( 'link', 'podcast' ), true )
+			)
+		);
+
+		if ( ! $links ) {
+			return;
+		}
+
+		echo '<aside class="yowm-quicklinks-rail" aria-label="Quick links">';
+		echo '<p class="yowm-quicklinks-title">Quick links</p>';
+		echo '<div class="yowm-resource-buttons">';
+
+		foreach ( $links as $resource ) {
+			$url = self::resource_url( $resource->ID, $year );
+			if ( ! $url ) {
+				continue;
+			}
+			$title = esc_html( self::clean_title( $resource->ID ) );
+
+			if ( 'podcast' === self::resource_type( $resource->ID ) ) {
+				echo '<button class="button yowm-resource-button" type="button" data-yowm-copy-url="' . esc_url( $url ) . '">' . $title . '</button>';
+			} else {
+				$new_tab  = get_post_meta( $resource->ID, self::META_RESOURCE_NEW_TAB, true ) ? ' target="_blank" rel="noopener noreferrer"' : '';
+				$download = get_post_meta( $resource->ID, self::META_RESOURCE_DOWNLOAD, true ) ? ' download' : '';
+				echo '<a class="button yowm-resource-button" href="' . esc_url( $url ) . '"' . $new_tab . $download . '>' . $title . '</a>';
+			}
+		}
+
+		echo '</div></aside>';
 	}
 
 	public static function get_lesson_for_cohort_by_slug( int $cohort_id, string $slug ): ?WP_Post {

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.28.0
+
+- Replaced the confusing "On deck" area on the cohort home with two matching cards: **Previous Lesson** (the latest released lesson) and **Coming Up** (the next one — title and date only). Coming Up hides itself when nothing is scheduled next.
+- Added a **quick-links side rail** on the cohort home and Class Info pages. Your Discord/Zoom/etc. links now sit in a sticky bar to the left, visible without scrolling, and collapse to the top on tablet and phone. Both pages use the same rail.
+- Reordered **Class Info** into one clean flow: the first item runs full-width (your Mission), the middle items form a box grid, and the last item runs full-width (Confidentiality) — all controlled by each item's Display order. Merged the old "At a Glance" and "Information" sections into one.
+- Fixed the cramped phone classroom nav (BUGS.md #2): the welcome line gets its own row and the links wrap evenly.
+
 ## 0.27.0
 
 - Renamed the plugin to **YOWM Classroom** everywhere it's visible — the plugin name, admin menu, page titles, settings headings, and notices — so the back end matches what students see. Internal identifiers (post types, meta keys, the `yowm_student` role, page slugs, the plugin folder and main file) are unchanged, so all existing lessons, cohorts, student accounts, and live podcast feeds keep working exactly as before.

@@ -9,7 +9,7 @@ Running list of issues found during beta. Tackled in batches, not one at a time.
 - **Worth adding:** **Safari (WebKit)** — a genuinely different engine from Chrome/Zen and the most likely to surface CSS/layout quirks the Chromium browsers hide. Firefox (Gecko) is a nice-to-have third.
 
 ## Open bugs
-2. **Phone cohort nav is cramped / left-jammed (student-facing).** On narrow phone widths the classroom nav (`.yowm-cohort-nav-inner`) wraps but items pile to the left unevenly and look crunched. iPad and desktop are fine. → Fix: give the mobile nav a proper responsive layout in `front.css` (clean stack or scrollable row, even spacing, separate the "Welcome, {name}" line; reconsider the `.yowm-change-cohort { margin-left:auto }` behavior on wrap). Confirmed on iPhone Safari. _[reported 2026-08-06]_
+_(none open right now.)_
 
 ## Parking lot (deliberately deferred — do NOT build now)
 - **Auto-generate the cohort schedule.** _Target: the Dec/Jan 2026→2027 between-classes window, not before._ Today the schedule is a hand-built "at a glance" resource Lani assigns per cohort. The pattern is fixed each year: **first lecture posts the 2nd Sunday in March, then runs on the standard pattern.** Elegant approach: generate the schedule from data the plugin already holds — each lesson's per-cohort release date — so the schedule box builds itself. Nice-to-have, low priority. _[parked 2026-09-17]_
@@ -17,3 +17,4 @@ Running list of issues found during beta. Tackled in batches, not one at a time.
 
 ## Fixed
 - **#1 Cohort-year dropdown wouldn't close (Students → Invite a student)** — it now closes on click-away so it no longer covers the Payment field. _Shipped 0.27.0, 2026-09-17._
+- **#2 Phone classroom nav cramped / left-jammed** — welcome line gets its own row, links wrap evenly. _Shipped 0.28.0, 2026-09-17._
