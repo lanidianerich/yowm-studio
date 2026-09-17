@@ -1,9 +1,9 @@
 <?php
 /**
- * Simplifies the WordPress admin for YOWM Studio administrators.
+ * Simplifies the WordPress admin for YOWM Classroom administrators.
  *
  * In "simple" mode (the default for administrators) the left-hand admin menu is
- * trimmed to just the handful of things Lani actually uses — YOWM Studio, Media,
+ * trimmed to just the handful of things Lani actually uses — YOWM Classroom, Media,
  * Plugins, and Settings — plus a single escape hatch that reveals the full
  * WordPress menu when it is needed. Nothing is ever removed permanently; hidden
  * menus are always one click away.
@@ -29,7 +29,7 @@ final class YOWM_Admin_Simplify {
 	 * lesson and podcast audio; Settings is the occasional home for permalinks etc.
 	 */
 	const KEEP = array(
-		'yowm-studio',         // YOWM Studio
+		'yowm-studio',         // YOWM Classroom
 		'upload.php',          // Media
 		'plugins.php',         // Plugins
 		'options-general.php', // Settings
@@ -54,7 +54,7 @@ final class YOWM_Admin_Simplify {
 
 	/**
 	 * Runs before any admin page renders. Handles the two menu-toggle links and,
-	 * in simple mode, sends the bare dashboard straight to YOWM Studio.
+	 * in simple mode, sends the bare dashboard straight to YOWM Classroom.
 	 */
 	public static function handle_requests(): void {
 		if ( ! self::applies() ) {
@@ -75,7 +75,7 @@ final class YOWM_Admin_Simplify {
 			exit;
 		}
 
-		// Land on YOWM Studio instead of the generic dashboard when the menu is trimmed.
+		// Land on YOWM Classroom instead of the generic dashboard when the menu is trimmed.
 		if ( self::is_simple() && 'index.php' === ( $GLOBALS['pagenow'] ?? '' ) && empty( $_GET ) ) {
 			wp_safe_redirect( admin_url( 'admin.php?page=yowm-studio' ) );
 			exit;

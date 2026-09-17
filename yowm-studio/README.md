@@ -1,6 +1,6 @@
-# YOWM Studio 0.13.0
+# YOWM Classroom 0.13.0
 
-This update adds the front-facing classroom to the existing YOWM Studio plugin.
+This update adds the front-facing classroom to the existing YOWM Classroom plugin.
 
 ## Install the update
 
@@ -16,7 +16,7 @@ Your existing cohort and Quick Sheet are preserved.
 
 Open:
 
-**YOWM Studio → Settings**
+**YOWM Classroom → Settings**
 
 Enter:
 
@@ -69,7 +69,7 @@ The plugin 404 page offers:
 - Classroom home
 - Learn about the class
 
-The public class URL is editable under **YOWM Studio → Settings**.
+The public class URL is editable under **YOWM Classroom → Settings**.
 
 ## Lesson page
 
@@ -108,7 +108,7 @@ Set the password while editing the cohort under **Cohort details → Cohort acce
 - The homepage now starts directly with cohort cards.
 - Fixed valid `/2027/` routes being mistaken for 404 pages.
 - Rewrite rules flush automatically when this plugin version is installed.
-- Kept the YOWM Studio admin menu expanded on Cohort, Module, Lesson, and Resource screens.
+- Kept the YOWM Classroom admin menu expanded on Cohort, Module, Lesson, and Resource screens.
 - Changed Modules to WordPress's native hierarchical checkbox panel.
 - Existing modules now appear as selectable checkboxes in the Lesson editor.
 - Added a migration that restores a missing cohort Year from its title.
@@ -201,7 +201,7 @@ Select one or more cohorts only when the URL or information changes by year.
 - Studio Cohorts, Lessons, and Resources now use a straightforward classic editing screen so every YOWM field is visible.
 - Fixed the password form redirect loop.
 - Added an unmistakable Cohort password box with current-password status.
-- Passwords entered through WordPress Quick Edit are also accepted by YOWM Studio.
+- Passwords entered through WordPress Quick Edit are also accepted by YOWM Classroom.
 - Lesson Cohort assignment is visible in Lesson details.
 - Resource type and cohort assignment are visible in Resource details.
 - Resources now offer an explicit All Cohorts or Specific Cohorts choice.
@@ -272,7 +272,7 @@ Add a dedicated How Story Works download page to `lanidianerich.com` using the e
 
 You can duplicate a Resource in two places:
 
-- **YOWM Studio → Resources → Duplicate**
+- **YOWM Classroom → Resources → Duplicate**
 - the normal WordPress Resource list, using the **Duplicate** row action
 
 The duplicate opens immediately as a Draft and copies:
@@ -291,7 +291,7 @@ The copy is titled `Original Title — Copy`.
 
 ### Organized Resource screen
 
-**YOWM Studio → Resources** is now an organized library rather than one increasingly long flat list.
+**YOWM Classroom → Resources** is now an organized library rather than one increasingly long flat list.
 
 Resources are placed inside collapsible cohort sections:
 
@@ -319,7 +319,7 @@ A **Standard WordPress list** button remains available when bulk actions or Quic
 - Prevents WordPress, the theme, or another editor preference from sending Studio content back to the Classic Editor.
 - Keeps the cohort-grouped Resource library and Resource duplication tools from 0.3.5.
 
-After installing, open **YOWM Studio → Resources** and click **Edit** on a Resource. The Gutenberg block editor should open, with YOWM Resource details beneath it.
+After installing, open **YOWM Classroom → Resources** and click **Edit** on a Resource. The Gutenberg block editor should open, with YOWM Resource details beneath it.
 
 
 ## Version 0.4.0: Library and reusable lessons
@@ -604,7 +604,7 @@ When an administrator chooses an audio file for a Lecture version or Live Sessio
 - The generated MP3 is added to the WordPress Media Library and placed into the Lesson field automatically.
 - Selecting the same original file again reuses its existing converted MP3.
 
-The server must have FFmpeg installed and PHP must be allowed to execute it. When those capabilities are unavailable, YOWM Studio shows an explicit warning and leaves the original URL in the field so work is not lost.
+The server must have FFmpeg installed and PHP must be allowed to execute it. When those capabilities are unavailable, YOWM Classroom shows an explicit warning and leaves the original URL in the field so work is not lost.
 
 Conversion uses high-quality variable-bitrate MP3 encoding and preserves available source metadata.
 
@@ -627,7 +627,7 @@ Lecture GUIDs remain tied to the Lecture version. Live-session GUIDs remain tied
 
 ## Version 0.9.1: MP3-only podcast workflow
 
-YOWM Studio no longer attempts server-side audio conversion.
+YOWM Classroom no longer attempts server-side audio conversion.
 
 The intended workflow is now:
 
@@ -678,7 +678,7 @@ Student Lesson pages now label the transcript control **Read or search the lectu
 
 ### Independent cohort access
 
-YOWM Studio now treats its own cohort password as the only classroom password system. Every cohort has a separate signed browser cookie, so unlocking 2027 does not lock 2026.
+YOWM Classroom now treats its own cohort password as the only classroom password system. Every cohort has a separate signed browser cookie, so unlocking 2027 does not lock 2026.
 
 Native WordPress post passwords are migrated when necessary and then removed. Do not use the Password field in WordPress Quick Edit for Cohorts; use the Cohort password panel instead.
 
@@ -697,7 +697,7 @@ After successful login, Studio adds a unique redirect value so an old cached gat
 
 ### Authentication diagnostics
 
-Open **YOWM Studio → Authentication** to see:
+Open **YOWM Classroom → Authentication** to see:
 
 - whether every cohort has a YOWM password;
 - whether a native WordPress password remains;
@@ -718,7 +718,7 @@ The Lesson template still uses cohort-specific session-video metadata. Version 0
 
 ## Version 0.11.1
 
-- Fixed the missing **Authentication** submenu. It now appears directly under **YOWM Studio** for administrators.
+- Fixed the missing **Authentication** submenu. It now appears directly under **YOWM Classroom** for administrators.
 - Renamed the WordPress backend **Library** section to **Class Info**.
 - Renamed backend post labels to **Class Info Item / Class Info**.
 - Preserved the existing internal post type and `/library/` URLs so no content, links, or bookmarks break.
@@ -751,7 +751,7 @@ Revoking a student blocks that cohort immediately and invalidates only that stud
 ## Version 0.12.1 hotfix
 
 - Removed the early personal-podcast interception that could cause a front-end critical error.
-- Moved roster management out of the Cohort editor into **YOWM Studio → Student Access**.
+- Moved roster management out of the Cohort editor into **YOWM Classroom → Student Access**.
 - Replaced the bulk textarea with ten clear Name and Email fields.
 - Fixed the account-creation form so it submits as a normal standalone WordPress admin form.
 - Added a cohort selector and visible success counts for account creation and invitation delivery.
@@ -770,12 +770,12 @@ Personal feed URLs are still created and shown in the roster. The older working 
 
 ## Version 0.12.3 diagnostic
 
-This build adds **YOWM Studio → System Diagnostics**.
+This build adds **YOWM Classroom → System Diagnostics**.
 
 After installing:
 
 1. Open `/2026/` and reproduce the critical error.
-2. Return to **YOWM Studio → System Diagnostics**.
+2. Return to **YOWM Classroom → System Diagnostics**.
 3. Copy the Message, File, and Line fields.
 
 The diagnostic stores only the most recent fatal PHP error. It does not display passwords, cookies, student data, or page content.
@@ -799,7 +799,7 @@ The diagnostic stores only the most recent fatal PHP error. It does not display 
 
 ## Version 0.13.0: unified students and student-chosen usernames
 
-- **YOWM Studio → Students** is one roster across all cohort years.
+- **YOWM Classroom → Students** is one roster across all cohort years.
 - New entries include first name, last name, email, and one or more cohort years.
 - New students receive a private setup link and choose their own username and password before WordPress creates the account.
 - Returning students are recognized by email and receive additional cohort memberships on the same account.

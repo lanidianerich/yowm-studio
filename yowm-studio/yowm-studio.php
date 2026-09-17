@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: YOWM Studio
+ * Plugin Name: YOWM Classroom
  * Plugin URI:  https://lanidianerich.com/
  * Description: Cohorts, modules, lessons, resources, and private classroom pages for the Year of Writing Magically.
- * Version:     0.26.0
+ * Version:     0.27.0
  * Author:      Lani Diane Rich
  * Author URI:  https://lanidianerich.com/
  * Text Domain: yowm-studio
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'YOWM_STUDIO_VERSION', '0.26.0' );
+define( 'YOWM_STUDIO_VERSION', '0.27.0' );
 define( 'YOWM_STUDIO_FILE', __FILE__ );
 define( 'YOWM_STUDIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'YOWM_STUDIO_URL', plugin_dir_url( __FILE__ ) );
@@ -1613,7 +1613,7 @@ final class YOWM_Studio {
 	}
 
 	public static function admin_menu(): void {
-		add_menu_page( 'YOWM Studio', 'YOWM Studio', 'edit_posts', 'yowm-studio', array( __CLASS__, 'dashboard' ), 'dashicons-welcome-learn-more', 3 );
+		add_menu_page( 'YOWM Classroom', 'YOWM Classroom', 'edit_posts', 'yowm-studio', array( __CLASS__, 'dashboard' ), 'dashicons-welcome-learn-more', 3 );
 		// Ordered by how often Lani uses them (daily first, yearly last).
 		add_submenu_page( 'yowm-studio', 'Dashboard', 'Dashboard', 'edit_posts', 'yowm-studio', array( __CLASS__, 'dashboard' ) );
 		add_submenu_page( 'yowm-studio', 'Lessons', 'Lessons', 'edit_posts', 'edit.php?post_type=' . self::LESSON );
@@ -1696,7 +1696,7 @@ final class YOWM_Studio {
 		);
 
 		echo '<div class="wrap yowm-admin"><h1>Classroom Authentication</h1>';
-		echo '<p>YOWM Studio uses a separate signed browser cookie for every cohort. WordPress post passwords are not used.</p>';
+		echo '<p>YOWM Classroom uses a separate signed browser cookie for every cohort. WordPress post passwords are not used.</p>';
 		echo '<div class="yowm-auth-summary"><strong>Protected classroom cache policy:</strong> no-store, private, Vary: Cookie.</div>';
 		echo '<table class="widefat striped yowm-auth-table"><thead><tr><th>Cohort</th><th>YOWM password</th><th>WordPress password</th><th>This browser</th><th>Classroom URL</th></tr></thead><tbody>';
 
@@ -1764,11 +1764,11 @@ final class YOWM_Studio {
 		$fatal = get_option( self::OPTION_LAST_FATAL, array() );
 
 		echo '<div class="wrap yowm-admin"><h1>YOWM System Diagnostics</h1>';
-		echo '<p>This screen records the last fatal PHP error triggered while YOWM Studio is active.</p>';
+		echo '<p>This screen records the last fatal PHP error triggered while YOWM Classroom is active.</p>';
 		echo '<p><strong>Test procedure:</strong> open <code>/2026/</code> in another tab, reproduce the critical error, then reload this page.</p>';
 
 		echo '<table class="widefat striped" style="max-width:1100px"><tbody>';
-		echo '<tr><th style="width:220px">YOWM Studio</th><td>' . esc_html( YOWM_STUDIO_VERSION ) . '</td></tr>';
+		echo '<tr><th style="width:220px">YOWM Classroom</th><td>' . esc_html( YOWM_STUDIO_VERSION ) . '</td></tr>';
 		echo '<tr><th>PHP</th><td>' . esc_html( PHP_VERSION ) . '</td></tr>';
 		echo '<tr><th>WordPress</th><td>' . esc_html( get_bloginfo( 'version' ) ) . '</td></tr>';
 		echo '<tr><th>Student Access class</th><td>' . ( class_exists( 'YOWM_Student_Access' ) ? 'Loaded' : 'Not loaded' ) . '</td></tr>';
@@ -1802,7 +1802,7 @@ final class YOWM_Studio {
 			foreach ( $fields as $label => $value ) {
 				$copy_lines[] = $label . ': ' . (string) $value;
 			}
-			$copy_text = 'YOWM Studio ' . YOWM_STUDIO_VERSION . " fatal error\n" . implode( "\n", $copy_lines );
+			$copy_text = 'YOWM Classroom ' . YOWM_STUDIO_VERSION . " fatal error\n" . implode( "\n", $copy_lines );
 
 			echo '<p style="margin-top:16px"><button type="button" class="button" data-yowm-copy-url="' . esc_attr( $copy_text ) . '">Copy error details</button></p>';
 
@@ -1826,7 +1826,7 @@ final class YOWM_Studio {
 		);
 		?>
 		<div class="wrap yowm-wrap">
-			<h1>YOWM Studio</h1>
+			<h1>YOWM Classroom</h1>
 			<p class="yowm-lede">Your cohorts, modules, lessons, resources, and protected classroom.</p>
 			<div class="yowm-grid">
 				<?php foreach ( $items as $item ) : ?>
@@ -2129,7 +2129,7 @@ final class YOWM_Studio {
 		$saved = isset( $_GET['settings-updated'] );
 		?>
 		<div class="wrap yowm-wrap">
-			<h1>YOWM Studio Settings</h1>
+			<h1>YOWM Classroom Settings</h1>
 			<?php if ( $saved ) : ?>
 				<div class="notice notice-success is-dismissible"><p>Settings saved.</p></div>
 			<?php endif; ?>
@@ -2146,7 +2146,7 @@ final class YOWM_Studio {
 					<?php self::field( 'url', 'yowm_signup_url', 'Public signup page', get_option( self::OPTION_SIGNUP_URL, 'https://lanidianerich.com/year-of-writing-magically.html' ) ); ?>
 				</section>
 
-				<?php submit_button( 'Save YOWM Studio settings' ); ?>
+				<?php submit_button( 'Save YOWM Classroom settings' ); ?>
 			</form>
 		</div>
 		<?php
@@ -2306,7 +2306,7 @@ final class YOWM_Studio {
 					<?php endforeach; ?>
 				</div>
 			<?php else : ?>
-				<p class="description">No modules exist yet. Create them under YOWM Studio → Modules.</p>
+				<p class="description">No modules exist yet. Create them under YOWM Classroom → Modules.</p>
 			<?php endif; ?>
 		</div>
 
@@ -2337,7 +2337,7 @@ final class YOWM_Studio {
 
 		echo '<div class="yowm-lecture-versions"><h3>Lecture versions</h3>';
 		echo '<p class="description">Earlier cohorts can keep an older recording while later cohorts use a revision. Archived versions remain active wherever they are assigned.</p>';
-		echo '<p class="yowm-format-note"><strong>Podcast audio must be uploaded as MP3.</strong> YOWM Studio will warn you if another format is selected, but it will not convert files on the server.</p>';
+		echo '<p class="yowm-format-note"><strong>Podcast audio must be uploaded as MP3.</strong> YOWM Classroom will warn you if another format is selected, but it will not convert files on the server.</p>';
 		echo '<div data-yowm-version-list>';
 		foreach ( $versions as $version_id => $version ) {
 			self::lecture_version_editor( (string) $version_id, (array) $version );
@@ -2881,7 +2881,7 @@ YOWM_Studio::init();
  * One-click updates from GitHub.
  *
  * Checks https://github.com/lanidianerich/yowm-studio for new releases so that
- * YOWM Studio appears in the normal WordPress Plugins → Update list. Each release
+ * YOWM Classroom appears in the normal WordPress Plugins → Update list. Each release
  * carries a built yowm-studio-<version>.zip asset, which is what gets installed.
  */
 require_once YOWM_STUDIO_DIR . 'lib/plugin-update-checker/plugin-update-checker.php';

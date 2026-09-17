@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.27.0
+
+- Renamed the plugin to **YOWM Classroom** everywhere it's visible — the plugin name, admin menu, page titles, settings headings, and notices — so the back end matches what students see. Internal identifiers (post types, meta keys, the `yowm_student` role, page slugs, the plugin folder and main file) are unchanged, so all existing lessons, cohorts, student accounts, and live podcast feeds keep working exactly as before.
+- Fixed the cohort-year dropdown staying open and covering the Payment field in Students → Invite a student; it now closes when you click away. (BUGS.md #1)
+
 ## 0.26.0
 
 - The cohort navigation bar now stays put on scroll. It was being covered by the theme's own sticky header; on cohort pages that header now scrolls away and the cohort nav sits above it.

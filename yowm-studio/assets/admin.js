@@ -277,6 +277,17 @@
     if (dropdown) refreshYearSummary(dropdown);
   });
 
+  // Close any open cohort-year dropdown when clicking outside it, so it stops
+  // covering the Payment field below. (Multiple years can still be ticked while
+  // it's open — it only closes when you click away.)
+  document.addEventListener("click", (event) => {
+    document.querySelectorAll(".yowm-year-dropdown[open]").forEach((dropdown) => {
+      if (!dropdown.contains(event.target)) {
+        dropdown.removeAttribute("open");
+      }
+    });
+  });
+
   // Click (or Enter/Space on) a roster header to sort the table by that column.
   function cellSortKey(cell) {
     if (!cell) return "";
