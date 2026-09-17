@@ -325,7 +325,16 @@
   margin-top: 1.25rem;
   font-size: 1.12rem;
   font-style: italic;
+  font-weight: 400;
   line-height: 1.6;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+/* The nav's short "Welcome, {name}" label shares the .yowm-welcome class and is
+   bold + non-wrapping; make sure that never leaks onto the header mission text. */
+.yowm-classroom-header .yowm-welcome * {
+  font-weight: 400;
+  white-space: normal;
 }
 
 .yowm-classroom-header .yowm-welcome > *:first-child {

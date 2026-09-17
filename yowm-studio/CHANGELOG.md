@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.29.1
+
+- Fixed the cohort welcome/mission text rendering bold and running off the page. It now wraps normally in regular-weight italic. (The nav's short "Welcome, {name}" label shares the same class and was leaking its bold, non-wrapping style onto the mission.)
+
 ## 0.29.0
 
 - Restyled the quick-links rail to match the lesson pages' "On this page" sidebar — a calm cream card with plain text links instead of pill buttons.
