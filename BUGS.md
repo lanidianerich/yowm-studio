@@ -9,6 +9,8 @@ Running list of issues found during beta. Tackled in batches, not one at a time.
 - **Worth adding:** **Safari (WebKit)** — a genuinely different engine from Chrome/Zen and the most likely to surface CSS/layout quirks the Chromium browsers hide. Firefox (Gecko) is a nice-to-have third.
 
 ## Open bugs
+4. **Podcast episode titles should include the module + lecture number (enhancement).** Episodes are currently titled by the lesson's plain WP title (e.g. "Preparing for Drafting"). Lani wants the module + number prefix — e.g. "Drafting #6: Preparing for Drafting" (format `{Module} #{Number}: {Title}`; session episodes keep the "… — Live Session" suffix). This reverses the 0.6.2 change that stripped the prefix. → Change `podcast_episode_title()` in `yowm-studio.php` to build from `lesson_module_name` + '#' + `META_NUMBER` + ': ' + clean title. _[requested 2026-09-20]_
+
 3. **Classroom nav "Welcome, {name}" can show an email instead of a first name (student-facing).** In `cohort-nav.php` the greeting uses `first_name`, then falls back to `display_name` — which for an account with no first name is the email (seen on Lani's admin account, "Welcome, lani.d.rich@gmail.com"). Students created via the roster have a first name so they're usually fine, but no one should ever see a raw email here. → Fix: prefer first name; fall back to `display_name` only when it doesn't look like an email address; otherwise drop the name entirely (e.g. just "Welcome" / "Welcome back"). Warmer + safe. _[reported 2026-09-17]_
 
 ## Parking lot (deliberately deferred — do NOT build now)
